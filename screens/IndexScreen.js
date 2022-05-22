@@ -1,18 +1,25 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, TextInput, StatusBar } from 'react-native';
+import { View, StyleSheet, TextInput, StatusBar, Button } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
-export default function HomeScreen () {
-    return (
+
+const HomeScreen = () => {
+   
+    const navigation = useNavigation();
+   
+   return (
         <View style={styles.container}>
 
             <TextInput
                 placeholder="Ingrese ubicación"
             />
-            <StatusBar style="auto" 
-            />
+
+            <Button title="Buscar" onPress={()=> navigation.navigate("Busqueda")}/>
         </View>
     );
 }
+
+export default HomeScreen;
 
 const styles=StyleSheet.create({ 
     container:{
