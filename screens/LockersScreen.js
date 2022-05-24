@@ -1,7 +1,7 @@
 import React from 'react';
 import{ View, Text, StyleSheet, TouchableOpacity } from 'react-native';
  
-const SettingsScreen = () =>{
+const LockersScreen = () => {
     return(
         <View>
              <Text
@@ -10,8 +10,9 @@ const SettingsScreen = () =>{
                       textAlign: "center",
                      marginTop: "20%"
                  }}
-            >Settings Screen</Text>
+            >Lockers!</Text>
         </View>
     );
     }
-export default SettingsScreen;
+
+    export default LockersScreen;
