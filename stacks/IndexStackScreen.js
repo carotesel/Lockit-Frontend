@@ -9,7 +9,11 @@ const IndexStackScreen = () => {
   const HomeStack = createNativeStackNavigator();
     return (
         <HomeStack.Navigator> 
-            <HomeStack.Screen name="Index" component={IndexScreen} />
+            <HomeStack.Screen name="Index" component={IndexScreen} 
+            options={{
+              headerShown: false,
+            }}
+            />
             <HomeStack.Screen name="Busqueda" component={BusquedaScreen} />  
         </HomeStack.Navigator> 
 

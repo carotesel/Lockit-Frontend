@@ -22,6 +22,7 @@ const Navigation = () => {
         initialRouteName="Home"
         screenOptions={{
           tabBarActiveTintColor: "#DF4F1A",
+          headerShown: false,
         }}
       >
         <Tab.Screen
