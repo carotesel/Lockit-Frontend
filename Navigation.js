@@ -9,9 +9,9 @@ import { Ionicons } from "@expo/vector-icons";
 import { Octicons } from "@expo/vector-icons";
 
 // screens
-import SettingsScreen from "./screens/SettingsScreen";
 import ProfileScreen from "./screens/ProfileScreen";
 import IndexStackScreen from "./stacks/IndexStackScreen";
+import LockersScreen from "./screens/LockersScreen";
 
 const Navigation = () => {
   const Tab = createBottomTabNavigator();
@@ -37,7 +37,7 @@ const Navigation = () => {
 
         <Tab.Screen
           name="Lockers"
-          component={SettingsScreen}
+          component={LockersScreen}
           options={{
             tabBarIcon: ({ color, size }) => (
               <MaterialCommunityIcons name="locker" size={35} color={color} />
