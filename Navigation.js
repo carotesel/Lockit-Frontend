@@ -19,7 +19,7 @@ const Navigation = () => {
   return (
     <NavigationContainer>
       <Tab.Navigator
-        initialRouteName="Home"
+        initialRouteName="Index"
         screenOptions={{
           tabBarActiveTintColor: "#DF4F1A",
           headerShown: false,

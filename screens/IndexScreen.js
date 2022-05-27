@@ -1,7 +1,7 @@
 import React from "react";
-import { View, StyleSheet, TextInput, StatusBar, Button, Text } from "react-native";
+import { View, StyleSheet, TextInput, StatusBar, Button } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import {LinearGradient} from 'expo-linear-gradient';
+import { LinearGradient } from 'expo-linear-gradient';
 
 const HomeScreen = () => {
   const navigation = useNavigation();
@@ -13,13 +13,6 @@ const HomeScreen = () => {
       <Button title="Buscar" onPress={() => navigation.navigate("Busqueda")} />
 
       <StatusBar style="auto" />
-
-      <LinearGradient
-        colors={["#4c669f", "#3b5998", "#192f6a"]}
-        style={styles.linearGradient}
-      >
-        <Text style={styles.buttonText}>Sign in with Facebook</Text>
-      </LinearGradient>
 
       {/*https://medium.com/@jocheattahdavid/linear-gradients-in-react-native-a0b7f7befd2a */}
     </View>
