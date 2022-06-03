@@ -1,4 +1,4 @@
-import { View, Text, TextInput, StatusBar, StyleSheet } from "react-native";
+import { View, Text, TextInput, StatusBar, StyleSheet, Button } from "react-native";
 import React from "react";
 
 const RegisterProviderScreen = () => {
@@ -17,7 +17,7 @@ const RegisterProviderScreen = () => {
       <TextInput style={styles.textInput} placeholder="Código Postal" />
       <TextInput style={styles.textInput} placeholder="Email" />
 
-      <Button>Registrarme</Button>
+      <Button title="Registrarme"></Button>
 
       <Text>Ya tenés una cuenta? Iniciar Sesión</Text>
 
