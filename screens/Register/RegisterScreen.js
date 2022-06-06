@@ -14,7 +14,7 @@ const RegisterScreen = () => {
 
       <Button title='Soy Cliente'/>
 
-      <Button title='Soy Proveedor!' onPress={() => navigation.navigate("RegisterProvider")}/>
+      <Button title='Soy Proveedor!' style={styles.orangebutton} onPress={() => navigation.navigate("RegisterProvider")}/>
     </View>
   );
 }
@@ -29,5 +29,9 @@ const styles = StyleSheet.create({
     backgroundColor: "#051E44",
     alignItems: "center",
     justifyContent: "center",
+  },
+  orangebutton: {
+    backgroundColor: "#F1230B",
+    borderWidth: 1,
   },
 });

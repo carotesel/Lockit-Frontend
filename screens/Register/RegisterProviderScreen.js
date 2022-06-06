@@ -1,5 +1,5 @@
-import { View, Text, TextInput, StatusBar, StyleSheet, Button } from "react-native";
-import React, { useState, useEffect } from 'react';
+import { View, Text, TextInput, StatusBar, StyleSheet, TouchableOpacity } from "react-native";
+import React, { useState } from 'react';
 
 
 const RegisterProviderScreen = () => {
@@ -30,13 +30,13 @@ const RegisterProviderScreen = () => {
   
   return (
     <View style={styles.container}>
-      <Text>Datos del titular</Text>
+      <Text style={styles.text}>Datos del titular</Text>
       <TextInput style={styles.textInput} placeholder="Nombre" name="nombre" onChange={(e) => onChangeInput(e, "nombre")}/>
       <TextInput style={styles.textInput} placeholder="Apellido" name="apellido" onChange={(e) => onChangeInput(e, "apellido")}/>
       <TextInput style={styles.textInput} placeholder="Email" name="email" onChange={(e) => onChangeInput(e, "email")}/>
       <TextInput style={styles.textInput} placeholder="DNI" name="dni" onChange={(e) => onChangeInput(e, "dni")}/>
 
-      <Text>Datos del negocio</Text>
+      <Text style={styles.text}>Datos del negocio</Text>
       <TextInput style={styles.textInput} placeholder="Nombre del comercio" name="nombreComercio" onChange={(e) => onChangeInput(e, "nombreComercio")}/>
       <TextInput style={styles.textInput} placeholder="Dirección" name="calle" onChange={(e) => onChangeInput(e, "calle")}/>
       <TextInput style={styles.textInput} placeholder="Altura" name="altura" onChange={(e) => onChangeInput(e, "altura")}/>
@@ -44,11 +44,14 @@ const RegisterProviderScreen = () => {
       <TextInput style={styles.textInput} placeholder="Código Postal" name="codPostal" onChange={(e) => onChangeInput(e, "codPostal")}/>
       <TextInput style={styles.textInput} placeholder="Email del comercio" name="emailComercio" onChange={(e) => onChangeInput(e, "emailComercio")}/>
 
-      <Button title="Registrarme" onPress={registrar}></Button>
+      <TouchableOpacity style={styles.orangebutton}>
+        <View style={styles.centerText}>
+        <Text style={styles.text} onPress={registrar}>Registrar</Text>
+        </View>
+      </TouchableOpacity>
+    
 
-      <Text>Ya tenés una cuenta? Iniciar Sesión</Text>
-
-
+      <Text style={styles.text}>Ya tenés una cuenta? Iniciar Sesión</Text>
 
       <StatusBar style="auto" />
     </View>
@@ -70,6 +73,24 @@ const styles = StyleSheet.create({
       width: "85%",
       borderRadius: 8,
       backgroundColor: "#fff",
+      marginTop: 8,
+    },
+    text: {
+      color: "#ffffff",
+      alignItems: "center",
+      justifyContent: "center",
+    },
+    centerText: {
+      alignItems: "center",
+    },
+    orangebutton: {
+      backgroundColor: "#F1230B",
+      borderWidth: 1,
+      padding: 15,
+      width: "35%",
+      borderRadius: 8,
+      marginTop: 8,
+      marginBottom: 8,
     },
   });
   
