@@ -7,10 +7,10 @@ import {
   TouchableOpacity,
 } from "react-native";
 import React, { useState } from "react";
-import DropDownPicker from "react-native-dropdown-picker";
 
 const RegisterProviderScreen = () => {
   const tiposLocker = ["Chico", "Mediano", "Grande"];
+  const [tipoLocker, setTipoLocker] = useState("");
 
   const [data, setData] = useState({
     nombre: undefined,
@@ -117,7 +117,21 @@ const RegisterProviderScreen = () => {
       />
 
       <Text style={styles.text}>Elija sus lockers</Text>
-      
+
+      <View style={{flexDirection:"row", justifyContent:'space-between'}}>
+      {tiposLocker.map((tipo) => (
+        <TouchableOpacity
+          key={tipo}  
+          style={styles.selector}
+          onPress={() => setTipoLocker(tipo)}
+        >
+          <View style={styles.centerText}>
+          <Text style={styles.textGris}>{tipo}</Text>
+          </View>
+        </TouchableOpacity>
+      ))}
+      </View>
+
       <TouchableOpacity style={styles.orangebutton} onPress={registrar}>
         <View style={styles.centerText}>
           <Text style={styles.text}>Registrarme</Text>
@@ -146,8 +160,7 @@ const styles = StyleSheet.create({
     width: "85%",
     borderRadius: 8,
     backgroundColor: "#fff",
-    marginTop: 8,
-  },
+    marginTop: 8,  },
   text: {
     color: "#ffffff",
     alignItems: "center",
@@ -155,6 +168,12 @@ const styles = StyleSheet.create({
     fontSize: 20,
     marginBottom: 8,
     marginTop: 12,
+  },
+  textNegro: {
+    color: "#000000",
+    alignItems: "center",
+    justifyContent: "center",
+    fontSize: 15,
   },
   centerText: {
     alignItems: "center",
@@ -168,4 +187,13 @@ const styles = StyleSheet.create({
     marginTop: 8,
     marginBottom: 8,
   },
+  selector: {
+      borderWidth: 1,
+      padding: 15,
+      width: "25%",
+      borderRadius: 8,
+      backgroundColor: "#fff",
+      marginTop: 8,
+      marginLeft: 8,
+    },
 });

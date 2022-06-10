@@ -9,13 +9,16 @@ import {
 import React from "react";
 import { useNavigation } from "@react-navigation/native";
 
+
 const RegisterScreen = () => {
   const navigation = useNavigation();
 
   return (
     <View style={styles.container}>
-      
-      <Image style={styles.image} source={require("../Register/images/LOGO.png")} />
+      <Image
+        style={styles.image}
+        source={require("../Register/images/LOGO.png")}
+      />
 
       <TextInput style={styles.textInput} placeholder="Nombre" name="CUIT" />
 
@@ -23,12 +26,23 @@ const RegisterScreen = () => {
 
       <TextInput style={styles.textInput} placeholder="Email" name="CUIT" />
 
-      <TextInput style={styles.textInput} placeholder="Nombre de Usuario" name="CUIT" />
+      <TextInput
+        style={styles.textInput}
+        placeholder="Nombre de Usuario"
+        name="CUIT"
+      />
 
-      <TextInput style={styles.textInput} placeholder="Contraseña" name="CUIT" />
+      <TextInput
+        style={styles.textInput}
+        placeholder="Contraseña"
+        name="CUIT"
+      />
 
-      <TextInput style={styles.textInput} placeholder="Confirmar contraseña" name="CUIT" />
-
+      <TextInput
+        style={styles.textInput}
+        placeholder="Confirmar contraseña"
+        name="CUIT"
+      />
 
 
       <TouchableOpacity
@@ -50,9 +64,10 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#051E44",
     alignItems: "center",
-    justifyContent: "center",},
- 
-    title: {
+    justifyContent: "center",
+  },
+
+  title: {
     color: "#ffffff",
     alignItems: "center",
     justifyContent: "center",
@@ -88,5 +103,5 @@ const styles = StyleSheet.create({
   },
   image: {
     marginBottom: 25,
-  }
+  },
 });
