@@ -11,6 +11,7 @@ import { Octicons } from "@expo/vector-icons";
 // screens
 import ProfileScreen from "./screens/ProfileScreen";
 import IndexStackScreen from "./stacks/IndexStackScreen";
+import RegisterStackScreen from "./stacks/RegisterStackScreen";
 import LockersScreen from "./screens/LockersScreen";
 
 const Navigation = () => {
@@ -19,12 +20,26 @@ const Navigation = () => {
   return (
     <NavigationContainer>
       <Tab.Navigator
-        initialRouteName="Index"
+        initialRouteName="Register"
         screenOptions={{
           tabBarActiveTintColor: "#DF4F1A",
           headerShown: false,
         }}
       >
+        <Tab.Screen
+          name="Register"
+          component={RegisterStackScreen}
+          options={{
+            tabBarLabelStyle: {
+              display: "none",
+            },
+            tabBarButton: () => null,
+            display: "none",
+            tabBarStyle: {
+              display: "none",
+            },
+          }}
+        />
         <Tab.Screen
           name="Home"
           component={IndexStackScreen}
