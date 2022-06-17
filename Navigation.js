@@ -1,9 +1,5 @@
 import react from "react";
-import {
-  BottomTabBar,
-  createBottomTabNavigator,
-} from "@react-navigation/bottom-tabs";
-import { NavigationContainer } from "@react-navigation/native";
+import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 import { Octicons } from "@expo/vector-icons";
@@ -11,35 +7,20 @@ import { Octicons } from "@expo/vector-icons";
 // screens
 import ProfileScreen from "./screens/ProfileScreen";
 import IndexStackScreen from "./stacks/IndexStackScreen";
-import RegisterStackScreen from "./stacks/RegisterStackScreen";
 import LockersScreen from "./screens/LockersScreen";
 
 const Navigation = () => {
   const Tab = createBottomTabNavigator();
 
   return (
-    <NavigationContainer>
       <Tab.Navigator
-        initialRouteName="Register"
+        initialRouteName="Home"
         screenOptions={{
           tabBarActiveTintColor: "#DF4F1A",
           headerShown: false,
         }}
       >
-        <Tab.Screen
-          name="Register"
-          component={RegisterStackScreen}
-          options={{
-            tabBarLabelStyle: {
-              display: "none",
-            },
-            tabBarButton: () => null,
-            display: "none",
-            tabBarStyle: {
-              display: "none",
-            },
-          }}
-        />
+        
         <Tab.Screen
           name="Home"
           component={IndexStackScreen}
@@ -70,7 +51,6 @@ const Navigation = () => {
           }}
         />
       </Tab.Navigator>
-    </NavigationContainer>
   );
 };
 

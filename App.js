@@ -1,9 +1,32 @@
 import React from 'react';
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import RegisterScreen from "./screens/Register/RegisterScreen";
+import RegisterProviderScreen from "./screens/Register/RegisterProviderScreen";
 import Navigation from './Navigation';
 
 export default function App() {
+
+  const Stack = createNativeStackNavigator();
+
   return (
-    <Navigation /> 
+    <NavigationContainer>
+      <Stack.Navigator
+      initialRouteName="RegisterScreen"
+>
+        <Stack.Screen name="Rscreen" component={RegisterScreen}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen name="Rprovider" component={RegisterProviderScreen} 
+        options={{
+          headerShown: false,
+        }}
+        />
+        <Stack.Screen name="Home" component={Navigation} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
 

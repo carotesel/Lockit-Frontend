@@ -1,16 +1,20 @@
 import {
   View,
+  ScrollView,
   Text,
   TextInput,
   StatusBar,
   StyleSheet,
   TouchableOpacity,
+  Image,
 } from "react-native";
 import React, { useState } from "react";
 
 const RegisterProviderScreen = () => {
   const tiposLocker = ["Chico", "Mediano", "Grande"];
   const [tipoLocker, setTipoLocker] = useState("");
+  
+  console.log(tipoLocker);
 
   const [data, setData] = useState({
     nombre: undefined,
@@ -39,7 +43,12 @@ const RegisterProviderScreen = () => {
   };
 
   return (
+    <ScrollView style={styles.scroll}>
     <View style={styles.container}>
+    <Image
+        style={styles.image}
+        source={require("../Register/images/LOGO.png")}
+      />
       <Text style={styles.text}>Datos del titular</Text>
       <TextInput
         style={styles.textInput}
@@ -116,21 +125,22 @@ const RegisterProviderScreen = () => {
         onChange={(e) => onChangeInput(e, "CUIT")}
       />
 
+    <View style={{marginTop:15 }}> 
       <Text style={styles.text}>Elija sus lockers</Text>
 
-      <View style={{flexDirection:"row", justifyContent:'space-between'}}>
+      <View style={{flexDirection:"row", justifyContent: "space-evenly" }}>
       {tiposLocker.map((tipo) => (
         <TouchableOpacity
           key={tipo}  
           style={styles.selector}
-          onPress={() => setTipoLocker(tipo)}
-        >
+          onPress={() => setTipoLocker(tipo)}  >
           <View style={styles.centerText}>
           <Text style={styles.textGris}>{tipo}</Text>
           </View>
         </TouchableOpacity>
       ))}
       </View>
+      </View> 
 
       <TouchableOpacity style={styles.orangebutton} onPress={registrar}>
         <View style={styles.centerText}>
@@ -142,6 +152,7 @@ const RegisterProviderScreen = () => {
 
       <StatusBar style="auto" />
     </View>
+    </ScrollView>
   );
 };
 
@@ -150,9 +161,14 @@ export default RegisterProviderScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    marginTop: 55,
     backgroundColor: "#051E44",
     alignItems: "center",
     justifyContent: "center",
+  },
+  scroll: {
+    flex: 1,
+    backgroundColor: "#051E44",
   },
   textInput: {
     borderWidth: 1,
@@ -167,7 +183,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     fontSize: 20,
     marginBottom: 8,
-    marginTop: 12,
+    marginTop: 10,
   },
   textNegro: {
     color: "#000000",
@@ -181,19 +197,22 @@ const styles = StyleSheet.create({
   orangebutton: {
     backgroundColor: "#DF4F1A",
     borderWidth: 1,
-    padding: 15,
+    padding: 6,
     width: "65%",
     borderRadius: 8,
-    marginTop: 8,
+    marginTop: 28,
     marginBottom: 8,
   },
   selector: {
       borderWidth: 1,
       padding: 15,
-      width: "25%",
+      width: "27%",
       borderRadius: 8,
       backgroundColor: "#fff",
       marginTop: 8,
-      marginLeft: 8,
+      marginLeft: 1,
+    },
+    image: {
+      marginTop: 40,
     },
 });

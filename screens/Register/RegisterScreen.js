@@ -47,7 +47,10 @@ const RegisterScreen = () => {
 
       <TouchableOpacity
         style={styles.orangebutton}
-        onPress={() => navigation.navigate("RegisterProvider")}
+        onPress={() => navigation.reset({
+          index: 0,
+          routes: [{ name: "Rprovider" }],
+        })}
       >
         <View style={styles.centerText}>
           <Text style={styles.text}>Registrarme</Text>
