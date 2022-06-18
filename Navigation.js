@@ -25,6 +25,7 @@ const Navigation = () => {
           name="Home"
           component={IndexStackScreen}
           options={{
+            headerShown: false,
             tabBarIcon: ({ color, size }) => (
               <Ionicons name="search" size={35} color={color} />
             ),

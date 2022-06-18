@@ -9,12 +9,13 @@ import {
   Image,
 } from "react-native";
 import React, { useState } from "react";
+import { useNavigation } from "@react-navigation/native";
 
 const RegisterProviderScreen = () => {
   const tiposLocker = ["Chico", "Mediano", "Grande"];
-  const [tipoLocker, setTipoLocker] = useState("");
+  const [tipo, setTipo] = useState("");
   
-  console.log(tipoLocker);
+  console.log(tipo);
 
   const [data, setData] = useState({
     nombre: undefined,
@@ -27,6 +28,7 @@ const RegisterProviderScreen = () => {
     ciudad: undefined,
     codPostal: undefined,
     emailComercio: undefined,
+    tipoDeLocker: undefined,
     razonSocial: undefined,
     CUIT: undefined,
   });
@@ -39,8 +41,15 @@ const RegisterProviderScreen = () => {
   };
 
   const registrar = () => {
+    navigation.reset({
+      index: 0,
+      routes: [{ name: "Nav" }],
+      });
     console.log(data);
+    
   };
+
+  const navigation = useNavigation();
 
   return (
     <ScrollView style={styles.scroll}>
@@ -133,7 +142,7 @@ const RegisterProviderScreen = () => {
         <TouchableOpacity
           key={tipo}  
           style={styles.selector}
-          onPress={() => setTipoLocker(tipo)}  >
+          onPress={() => setTipo(tipo)}  >
           <View style={styles.centerText}>
           <Text style={styles.textGris}>{tipo}</Text>
           </View>
