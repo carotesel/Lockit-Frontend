@@ -8,10 +8,38 @@ import {
 } from "react-native";
 import React from "react";
 import { useNavigation } from "@react-navigation/native";
+import { useState } from "react";
 
 
 const RegisterScreen = () => {
+  
   const navigation = useNavigation();
+
+  const [data, setData] = useState({
+    nombre: undefined,
+    apellido: undefined,
+    email: undefined,
+    user: undefined, 
+    contra: undefined, 
+    confContra: undefined,
+
+  });
+
+  const handleInput = (e, name) => {
+    setData({
+      ...data,
+      [name]: e.nativeEvent.text,
+    });
+  };
+
+  const registrar = () => {
+    navigation.reset({
+      index: 0,
+      routes: [{ name: "Rprovider" }],
+      });
+    console.log(data);
+    
+  };
 
   return (
     <View style={styles.container}>
@@ -20,28 +48,31 @@ const RegisterScreen = () => {
         source={require("../Register/images/LOGO.png")}
       />
 
-      <TextInput style={styles.textInput} placeholder="Nombre" name="CUIT" />
+      <TextInput style={styles.textInput} placeholder="Nombre" name="nombre" onChange={(e) => handleInput(e,"nombre")}/>
 
-      <TextInput style={styles.textInput} placeholder="Apellido" name="CUIT" />
+      <TextInput style={styles.textInput} placeholder="Apellido" name="apellido" onChange={(e) => handleInput(e,"apellido" )}/>
 
-      <TextInput style={styles.textInput} placeholder="Email" name="CUIT" />
+      <TextInput style={styles.textInput} placeholder="Email" name="email" onChange={(e) => handleInput(e, "email")}/>
 
       <TextInput
         style={styles.textInput}
         placeholder="Nombre de Usuario"
-        name="CUIT"
+        name="user"
+        onChange={(e) => handleInput(e,"user")}
       />
 
       <TextInput
         style={styles.textInput}
         placeholder="Contraseña"
-        name="CUIT"
+        name="contra"
+        onChange={(e) => handleInput(e, "contra")}
       />
 
       <TextInput
         style={styles.textInput}
         placeholder="Confirmar contraseña"
-        name="CUIT"
+        name="confContra"
+        onChange={(e) => handleInput(e, "confContra")}
       />
 
 
@@ -53,7 +84,7 @@ const RegisterScreen = () => {
         })}
       >
         <View style={styles.centerText}>
-          <Text style={styles.text}>Registrarme</Text>
+          <Text style={styles.text} onPress={registrar}>Registrarme</Text>
         </View>
       </TouchableOpacity>
     </View>

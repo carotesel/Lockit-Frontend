@@ -28,7 +28,6 @@ const RegisterProviderScreen = () => {
     ciudad: undefined,
     codPostal: undefined,
     emailComercio: undefined,
-    tipoDeLocker: undefined,
     razonSocial: undefined,
     CUIT: undefined,
   });
