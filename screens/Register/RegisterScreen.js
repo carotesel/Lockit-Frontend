@@ -9,6 +9,9 @@ import {
 import React from "react";
 import { useNavigation } from "@react-navigation/native";
 import { useState } from "react";
+import PhoneInput from 'react-native-phone-input'
+
+
 
 
 const RegisterScreen = () => {
@@ -21,9 +24,12 @@ const RegisterScreen = () => {
     email: undefined,
     user: undefined, 
     contra: undefined, 
-    confContra: undefined,
-
+  
   });
+
+  const [phone, setPhone] = useState('');
+
+  console.log(phone);
 
   const handleInput = (e, name) => {
     setData({
@@ -48,17 +54,20 @@ const RegisterScreen = () => {
         source={require("../Register/images/LOGO.png")}
       />
 
-      <TextInput style={styles.textInput} placeholder="Nombre" name="nombre" onChange={(e) => handleInput(e,"nombre")}/>
+      <TextInput style={styles.textInput} placeholder="Nombre" name="nombre" onChange={(e) => handleInput(e,"nombre")}  placeholderTextColor="#adaaaa" 
+/>
 
-      <TextInput style={styles.textInput} placeholder="Apellido" name="apellido" onChange={(e) => handleInput(e,"apellido" )}/>
+      <TextInput style={styles.textInput} placeholder="Apellido" name="apellido" onChange={(e) => handleInput(e,"apellido" )}  placeholderTextColor="#adaaaa" 
+/>
 
-      <TextInput style={styles.textInput} placeholder="Email" name="email" onChange={(e) => handleInput(e, "email")}/>
+      <TextInput style={styles.textInput} placeholder="Email" name="email" onChange={(e) => handleInput(e, "email")} placeholderTextColor="#adaaaa" />
 
       <TextInput
         style={styles.textInput}
         placeholder="Nombre de Usuario"
         name="user"
         onChange={(e) => handleInput(e,"user")}
+        placeholderTextColor="#adaaaa" 
       />
 
       <TextInput
@@ -66,25 +75,30 @@ const RegisterScreen = () => {
         placeholder="Contraseña"
         name="contra"
         onChange={(e) => handleInput(e, "contra")}
+        placeholderTextColor="#adaaaa" 
       />
 
-      <TextInput
+      <PhoneInput
+        name="telefono"
         style={styles.textInput}
-        placeholder="Confirmar contraseña"
-        name="confContra"
-        onChange={(e) => handleInput(e, "confContra")}
+        onChangePhoneNumber={(phone) => setPhone(phone)}
+        textProps={{
+          placeholder: 'Teléfono',
+          placeholderTextColor: '#adaaaa',
+      }}
+        flagStyle={{
+          width: 35,
+          height: 20,
+        }}
       />
-
+      
 
       <TouchableOpacity
         style={styles.orangebutton}
-        onPress={() => navigation.reset({
-          index: 0,
-          routes: [{ name: "Rprovider" }],
-        })}
+        onPress={registrar}
       >
         <View style={styles.centerText}>
-          <Text style={styles.text} onPress={registrar}>Registrarme</Text>
+          <Text style={styles.text} >Registrarme</Text>
         </View>
       </TouchableOpacity>
     </View>
