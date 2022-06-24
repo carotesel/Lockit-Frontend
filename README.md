@@ -1,2 +1,2 @@
 # Proyecto-Lockit
-Este es un repo para empezar a utilizar React Native en Proyecto Final :)
+Este es el repo de nuestra app de React Native para Proyecto Final :)
