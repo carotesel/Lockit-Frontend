@@ -9,7 +9,10 @@ import {
 import React from "react";
 import { useNavigation } from "@react-navigation/native";
 import { useState } from "react";
-import PhoneInput from 'react-native-phone-input'
+import PhoneInput from 'react-native-phone-input';
+import BouncyCheckbox from "react-native-bouncy-checkbox";
+import axios from "axios";
+
 
 
 
@@ -17,6 +20,7 @@ import PhoneInput from 'react-native-phone-input'
 const RegisterScreen = () => {
   
   const navigation = useNavigation();
+  const users = ["proveedor", "cliente"];
 
   const [data, setData] = useState({
     nombre: undefined,
@@ -24,12 +28,13 @@ const RegisterScreen = () => {
     email: undefined,
     user: undefined, 
     contra: undefined, 
+    userName: undefined,
   
   });
 
   const [phone, setPhone] = useState('');
+  const [userChecked, setUserChecked] = useState('');
 
-  console.log(phone);
 
   const handleInput = (e, name) => {
     setData({
@@ -38,14 +43,65 @@ const RegisterScreen = () => {
     });
   };
 
-  const registrar = () => {
-    navigation.reset({
-      index: 0,
-      routes: [{ name: "Rprovider" }],
+  const registrar = async () => {
+    try {
+      await postData();
+      navigation.reset({
+        index: 0,
+        routes: [{ name: "Rprovider" }],
       });
-    console.log(data);
-    
+    } catch (error) {
+      console.log(error)
+    }
   };
+
+  const postData = async () => {
+    const body = {
+      nombre: data.nombre,
+      apellido: data.apellido,
+      mail: data.email,
+      contrasenia: data.contra,
+      telefono: "330494848", 
+      fechaNac: "2020-09-10",
+      fkRol: 1, 
+      username: data.userName,
+    };
+    try {
+      console.log("creando");
+      const response = await axios.post("https://lockit-backend-anto.herokuapp.com/api/users/createUser", body);
+      console.log(response);
+      if (response.status === 200) {
+        console.log("Se registro correctamente");
+      }
+      }
+    catch (error) {
+      console.log(error);
+    }
+  }
+
+  const handleUser = (e) => {
+    setUserChecked(e);
+    if (e !== "proveedor" && e !== "cliente") {
+      setData({
+        ...data,
+        user: undefined,
+      });
+    }
+    else if (e === "proveedor") {
+      setData({
+        ...data,
+        user: "proveedor",
+      });
+    } else if (e === "cliente") {
+      setData({
+        ...data,
+        user: "cliente",
+      });
+    }
+   
+  }
+  
+ 
 
   return (
     <View style={styles.container}>
@@ -65,8 +121,8 @@ const RegisterScreen = () => {
       <TextInput
         style={styles.textInput}
         placeholder="Nombre de Usuario"
-        name="user"
-        onChange={(e) => handleInput(e,"user")}
+        name="userName"
+        onChange={(e) => handleInput(e,"userName")}
         placeholderTextColor="#adaaaa" 
       />
 
@@ -91,11 +147,26 @@ const RegisterScreen = () => {
           height: 20,
         }}
       />
+
+      {users.map((user) => (
+        <BouncyCheckbox
+          key={user}
+          text={user}
+          textStyle={{
+            fontSize: 15,
+            color: "#FFFFFF",
+            textDecorationLine: "none",
+          }}   
+          onPress={() => 
+          handleUser(user)        
+        }
+        />
+      ))}
       
 
       <TouchableOpacity
         style={styles.orangebutton}
-        onPress={registrar}
+        onPress={async () => await registrar()}
       >
         <View style={styles.centerText}>
           <Text style={styles.text} >Registrarme</Text>

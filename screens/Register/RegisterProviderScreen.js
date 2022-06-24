@@ -6,10 +6,10 @@ import {
   StatusBar,
   StyleSheet,
   TouchableOpacity,
-  Image,Button,
-
+  Image,
+  Button,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
@@ -32,11 +32,14 @@ const RegisterProviderScreen = () => {
   const [isChecked, setIsChecked] = useState(false);
   const [aper, setAper] = useState("");
   const [cierre, setCierre] = useState("");
-  const [isVisible, setIsVisible] = useState(false);
+  const [horario, setHorario] = useState({
+    apertura: "",
+    cierre: "",
+    day: "",
+  });
 
-
-  const[dataTiming, setDataTiming]  = useState({
-    Lunes: undefined, 
+  const [dataTiming, setDataTiming] = useState({
+    Lunes: undefined,
     Martes: undefined,
     Miercoles: undefined,
     Jueves: undefined,
@@ -47,6 +50,7 @@ const RegisterProviderScreen = () => {
 
   console.log(tipo);
   console.log(dataTiming);
+  console.log(horario);
 
   const [data, setData] = useState({
     nombre: undefined,
@@ -79,13 +83,20 @@ const RegisterProviderScreen = () => {
     console.log(data);
   };
 
-
-  const showAperPicker = () => {
+  const showAperPicker = (dia) => {
+    setHorario({
+      ...horario,
+      day: dia,
+    })
     setAperPickerVisibility(true);
     setCierrePickerVisibility(false);
   };
 
-  const showCierrePicker = () => {
+  const showCierrePicker = (dia) => {
+    setHorario({
+      ...horario,
+      day: dia,
+    })
     setAperPickerVisibility(false);
     setCierrePickerVisibility(true);
   };
@@ -99,20 +110,36 @@ const RegisterProviderScreen = () => {
   };
 
   const handleConfirmAper = (time) => {
-    console.warn("APER - A date has been picked: ", time.getHours(), time.getMinutes());
+    console.log(
+      "APER - A date has been picked: ",
+      time.getHours(),
+      time.getMinutes()
+    );
     setAper(time.getHours() + ":" + time.getMinutes());
+    setHorario({
+      ...horario,
+      apertura: time.getHours() + ":" + time.getMinutes(),
+    });
     hideAperPicker();
   };
 
   const handleConfirmCierre = (time) => {
-    console.warn("CIERRE - A date has been picked: ", time.getHours(), time.getMinutes());
+    console.log(
+      "CIERRE - A date has been picked: ",
+      time.getHours(),
+      time.getMinutes()
+    );
     setCierre(time.getHours() + ":" + time.getMinutes());
     hideCierrePicker();
+    setHorario({
+      ...horario,
+      cierre: time.getHours() + ":" + time.getMinutes(),
+    });
   };
 
-  const handleCheck = ( name, e) => {
+  const handleCheck = (name, e) => {
     console.log(name, e);
-    
+
     if (dataTiming[name] === undefined) {
       setDataTiming({
         ...dataTiming,
@@ -123,228 +150,236 @@ const RegisterProviderScreen = () => {
         ...dataTiming,
         [name]: undefined,
       });
-}    
+    }
   };
-// [name]: [],
+
+  const handleOpenAper = (dia) => {
+   if (horario.day === '') {
+     showAperPicker(dia);
+   }
+  }
+
+  const handleOpenCierre = (dia) => {
+    if (horario.day === '') {
+      showCierrePicker(dia);
+    }
+  }
+
   const navigation = useNavigation();
 
   return (
     <>
-    <ScrollView style={styles.scroll}>
-      <View style={styles.container}>
-        <Image
-          style={styles.image}
-          source={require("../Register/images/LOGO.png")}
-        />
-        <Text style={styles.text}>Datos del titular</Text>
-        <TextInput
-          style={styles.textInput}
-          placeholder="Nombre"
-          name="nombre"
-          onChange={(e) => onChangeInput(e, "nombre")}
-          placeholderTextColor="#adaaaa" 
-        />
-        <TextInput
-          style={styles.textInput}
-          placeholder="Apellido"
-          name="apellido"
-          onChange={(e) => onChangeInput(e, "apellido")}
-          placeholderTextColor="#adaaaa" 
+      <ScrollView style={styles.scroll}>
+        <View style={styles.container}>
+          <Image
+            style={styles.image}
+            source={require("../Register/images/LOGO.png")}
+          />
+          <Text style={styles.text}>Datos del titular</Text>
+          <TextInput
+            style={styles.textInput}
+            placeholder="Nombre"
+            name="nombre"
+            onChange={(e) => onChangeInput(e, "nombre")}
+            placeholderTextColor="#adaaaa"
+          />
+          <TextInput
+            style={styles.textInput}
+            placeholder="Apellido"
+            name="apellido"
+            onChange={(e) => onChangeInput(e, "apellido")}
+            placeholderTextColor="#adaaaa"
+          />
+          <TextInput
+            style={styles.textInput}
+            placeholder="Email"
+            name="email"
+            onChange={(e) => onChangeInput(e, "email")}
+            placeholderTextColor="#adaaaa"
+          />
+          <TextInput
+            style={styles.textInput}
+            placeholder="DNI"
+            name="dni"
+            onChange={(e) => onChangeInput(e, "dni")}
+            placeholderTextColor="#adaaaa"
+          />
 
-        />
-        <TextInput
-          style={styles.textInput}
-          placeholder="Email"
-          name="email"
-          onChange={(e) => onChangeInput(e, "email")}
-          placeholderTextColor="#adaaaa" 
+          <Text style={styles.text}>Datos del negocio</Text>
+          <TextInput
+            style={styles.textInput}
+            placeholder="Nombre del comercio"
+            name="nombreComercio"
+            onChange={(e) => onChangeInput(e, "nombreComercio")}
+            placeholderTextColor="#adaaaa"
+          />
+          <TextInput
+            style={styles.textInput}
+            placeholder="Dirección"
+            name="calle"
+            onChange={(e) => onChangeInput(e, "calle")}
+            placeholderTextColor="#adaaaa"
+          />
+          <TextInput
+            style={styles.textInput}
+            placeholder="Altura"
+            name="altura"
+            onChange={(e) => onChangeInput(e, "altura")}
+            placeholderTextColor="#adaaaa"
+          />
+          <TextInput
+            style={styles.textInput}
+            placeholder="Ciudad"
+            name="ciudad"
+            onChange={(e) => onChangeInput(e, "ciudad")}
+            placeholderTextColor="#adaaaa"
+          />
+          <TextInput
+            style={styles.textInput}
+            placeholder="Código Postal"
+            name="codPostal"
+            onChange={(e) => onChangeInput(e, "codPostal")}
+            placeholderTextColor="#adaaaa"
+          />
+          <TextInput
+            style={styles.textInput}
+            placeholder="Email del comercio"
+            name="emailComercio"
+            onChange={(e) => onChangeInput(e, "emailComercio")}
+            placeholderTextColor="#adaaaa"
+          />
+          <TextInput
+            style={styles.textInput}
+            placeholder="Razón Social del comercio"
+            name="razonSocial"
+            onChange={(e) => onChangeInput(e, "razonSocial")}
+            placeholderTextColor="#adaaaa"
+          />
+          <TextInput
+            style={styles.textInput}
+            placeholder="CUIT"
+            name="CUIT"
+            onChange={(e) => onChangeInput(e, "CUIT")}
+            placeholderTextColor="#adaaaa"
+          />
 
-        />
-        <TextInput
-          style={styles.textInput}
-          placeholder="DNI"
-          name="dni"
-          onChange={(e) => onChangeInput(e, "dni")}
-          placeholderTextColor="#adaaaa" 
+          <View style={{ marginTop: 15 }}>
+            <Text style={styles.text}>Elija sus lockers</Text>
 
-        />
+            <View
+              style={{ flexDirection: "row", justifyContent: "space-evenly" }}
+            >
+              <>
+                {tiposLocker.map((lock) => (
+                  <BouncyCheckbox
+                    key={lock}
+                    style={styles.selector}
+                    onPress={() => {
+                      if (tipo.find((t) => t === lock) === undefined) {
+                        setTipo([...tipo, lock]);
+                      } else {
+                        setTipo(tipo.filter((t) => t !== lock));
+                      }
+                    }}
+                    size={25}
+                    fillColor="#DF4F1A"
+                    unfillColor="#FFFFFF"
+                    name={lock}
+                    text={lock}
+                    textStyle={{
+                      fontSize: 15,
+                      color: "#DF4F1A",
+                      textDecorationLine: "none",
+                    }}
+                  ></BouncyCheckbox>
+                ))}
+              </>
+            </View>
+          </View>
 
-        <Text style={styles.text}>Datos del negocio</Text>
-        <TextInput
-          style={styles.textInput}
-          placeholder="Nombre del comercio"
-          name="nombreComercio"
-          onChange={(e) => onChangeInput(e, "nombreComercio")}
-          placeholderTextColor="#adaaaa" 
-        />
-        <TextInput
-          style={styles.textInput}
-          placeholder="Dirección"
-          name="calle"
-          onChange={(e) => onChangeInput(e, "calle")}
-          placeholderTextColor="#adaaaa" 
+          <View style={{ marginTop: 15 }}>
+            <Text style={styles.text}>Elija los dias que abre</Text>
 
-        />
-        <TextInput
-          style={styles.textInput}
-          placeholder="Altura"
-          name="altura"
-          onChange={(e) => onChangeInput(e, "altura")}
-          placeholderTextColor="#adaaaa" 
-
-        />
-        <TextInput
-          style={styles.textInput}
-          placeholder="Ciudad"
-          name="ciudad"
-          onChange={(e) => onChangeInput(e, "ciudad")}
-          placeholderTextColor="#adaaaa" 
-
-        />
-        <TextInput
-          style={styles.textInput}
-          placeholder="Código Postal"
-          name="codPostal"
-          onChange={(e) => onChangeInput(e, "codPostal")}
-          placeholderTextColor="#adaaaa" 
-
-        />
-        <TextInput
-          style={styles.textInput}
-          placeholder="Email del comercio"
-          name="emailComercio"
-          onChange={(e) => onChangeInput(e, "emailComercio")}
-          placeholderTextColor="#adaaaa" 
-
-        />
-        <TextInput
-          style={styles.textInput}
-          placeholder="Razón Social del comercio"
-          name="razonSocial"
-          onChange={(e) => onChangeInput(e, "razonSocial")}
-          placeholderTextColor="#adaaaa" 
-
-        />
-        <TextInput
-          style={styles.textInput}
-          placeholder="CUIT"
-          name="CUIT"
-          onChange={(e) => onChangeInput(e, "CUIT")}
-          placeholderTextColor="#adaaaa" 
-
-        />
-
-        <View style={{ marginTop: 15 }}>
-          <Text style={styles.text}>Elija sus lockers</Text>
-
-          <View
-            style={{ flexDirection: "row", justifyContent: "space-evenly" }}
-          >
-            <>
-            {tiposLocker.map((lock) => (
+            {dias.map((dia) => (
               <BouncyCheckbox
-                key={lock}
-                style={styles.selector}
-                onPress={() => {
-                   if (tipo.find((t) => t === lock) === undefined) {
-                    setTipo([...tipo, lock]);
-                  } else {
-                    setTipo(tipo.filter((t) => t !== lock));
-                }
-                }}
                 size={25}
                 fillColor="#DF4F1A"
                 unfillColor="#FFFFFF"
-                name={lock}
-                text={lock}
-                textStyle={{ fontSize: 15, color: "#DF4F1A", textDecorationLine: "none", }}
-              >
-              </BouncyCheckbox>
+                name={dia}
+                text={dia}
+                onPress={() => {
+                  if (diasSeleccionados.includes(dia)) {
+                    setDiasSeleccionados(
+                      diasSeleccionados.filter((d) => d !== dia)
+                    );
+                  } else {
+                    setDiasSeleccionados([...diasSeleccionados, dia]);
+                  }
+                  setIsChecked(!isChecked);
+                  handleCheck(dia);
+                  console.log(dataTiming);
+                }}
+                key={dia}
+                iconStyle={{
+                  borderColor: "#DF4F1A",
+                  borderWidth: 1,
+                  borderRadius: 5,
+                  padding: 5,
+                  margin: 5,
+                  marginTop: 10,
+                  marginBottom: 10,
+                }}
+                textStyle={{
+                  textDecorationLine: "none",
+                  color: "white",
+                }}
+              />
             ))}
-            </>
           </View>
-        </View>
 
-        <View style={{ marginTop: 15 }}>
-          <Text style={styles.text}>Elija los dias que abre</Text>
-
-          {dias.map((dia) => (
-            <BouncyCheckbox
-              size={25}
-              fillColor="#DF4F1A"
-              unfillColor="#FFFFFF"
-              name={dia}
-              text={dia}
-              onPress={() => {
-                if (diasSeleccionados.includes(dia)) {
-                  setDiasSeleccionados(
-                    diasSeleccionados.filter((d) => d !== dia)
-                  );
-                } else {
-                  setDiasSeleccionados([...diasSeleccionados, dia]);
-                }
-                setIsChecked(!isChecked);
-                handleCheck(dia);
-                console.log(dataTiming);
-                setIsVisible(true);
-
-              }}
-              key={dia}
-              iconStyle={{
-                borderColor: "#DF4F1A",
-                borderWidth: 1,
-                borderRadius: 5,
-                padding: 5,
-                margin: 5,
-                marginTop: 10,
-                marginBottom: 10,
-              }}
-              textStyle={{
-                textDecorationLine: "none",
-                color: "white",
-              }}
-            />
+          {diasSeleccionados.map((dia) => (
+            <View style={{ marginTop: 15 }} key={dia}>
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                }}
+              >
+                <Text style={styles.text} key={dia}>
+                  {dia}
+                </Text>
+                <Text style={styles.text}>Franja Horaria</Text>
+              </View>
+              <Button title="Apertura" onPress={()=>handleOpenAper(dia)} />
+              <Button title="Cierre" onPress={()=>handleOpenCierre(dia)} />
+              <DateTimePickerModal
+                isVisible={isAperPickerVisible}
+                mode="time"
+                onConfirm={handleConfirmAper}
+                onCancel={hideAperPicker}
+                display="spinner"
+              />
+              <DateTimePickerModal
+                isVisible={isCierrePickerVisible}
+                mode="time"
+                onConfirm={handleConfirmCierre}
+                onCancel={hideCierrePicker}
+                display="spinner"
+              />
+            </View>
           ))}
+
+          <TouchableOpacity style={styles.orangebutton} onPress={registrar}>
+            <View style={styles.centerText}>
+              <Text style={styles.text}>Registrarme</Text>
+            </View>
+          </TouchableOpacity>
+
+          <Text style={styles.text}>Ya tenés una cuenta? Iniciar Sesión</Text>
+
+          <StatusBar style="auto" />
         </View>
-
-
-      
-        {diasSeleccionados.map((dia) => (
-        <View style={{ marginTop: 15 }} key={dia}>
-          <View style={{flexDirection: "row", justifyContent: 'space-between'}}> 
-          <Text style={styles.text} key={dia}>{dia}</Text>
-          <Text style={styles.text}>Franja Horaria</Text>
-          </View>
-          <Button title="Apertura" onPress={showAperPicker} />
-          <Button title="Cierre" onPress={showCierrePicker} />
-          <DateTimePickerModal
-            isVisible={isAperPickerVisible}
-            mode="time"
-            onConfirm={handleConfirmAper}
-            onCancel={hideAperPicker}
-            display="spinner"
-          />
-           <DateTimePickerModal
-            isVisible={isCierrePickerVisible}
-            mode="time"
-            onConfirm={handleConfirmCierre}
-            onCancel={hideCierrePicker}
-            display="spinner"
-          />        
-        </View>
-         ))}
-        
-        <TouchableOpacity style={styles.orangebutton} onPress={registrar}>
-          <View style={styles.centerText}>
-            <Text style={styles.text}>Registrarme</Text>
-          </View>
-        </TouchableOpacity>
-
-        <Text style={styles.text}>Ya tenés una cuenta? Iniciar Sesión</Text>
-
-        <StatusBar style="auto" />
-      </View>
-    </ScrollView>
+      </ScrollView>
     </>
   );
 };
