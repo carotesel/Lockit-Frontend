@@ -45,7 +45,7 @@ const RegisterScreen = () => {
 
   const registrar = async () => {
     try {
-      await postData();
+     // await postData();
       navigation.reset({
         index: 0,
         routes: [{ name: "Rprovider" }],
@@ -61,9 +61,9 @@ const RegisterScreen = () => {
       apellido: data.apellido,
       mail: data.email,
       contrasenia: data.contra,
-      telefono: "330494848", 
+      telefono: phone, 
       fechaNac: "2020-09-10",
-      fkRol: 1, 
+      fkRol: data.user, 
       username: data.userName,
     };
     try {
@@ -90,12 +90,12 @@ const RegisterScreen = () => {
     else if (e === "proveedor") {
       setData({
         ...data,
-        user: "proveedor",
+        user: 1,
       });
     } else if (e === "cliente") {
       setData({
         ...data,
-        user: "cliente",
+        user: 2,
       });
     }
    
@@ -107,7 +107,7 @@ const RegisterScreen = () => {
     <View style={styles.container}>
       <Image
         style={styles.image}
-        source={require("../Register/images/LOGO.png")}
+        source={require("../../assets/images/LOGO.png")}
       />
 
       <TextInput style={styles.textInput} placeholder="Nombre" name="nombre" onChange={(e) => handleInput(e,"nombre")}  placeholderTextColor="#adaaaa" 

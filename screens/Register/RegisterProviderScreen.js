@@ -11,8 +11,10 @@ import {
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
-import BouncyCheckbox from "react-native-bouncy-checkbox";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
+import BouncyCheckbox from "react-native-bouncy-checkbox";
+import Checkbox1 from "../../components/Checkbox1";
+import Checkbox2 from "../../components/Checkbox2";
 
 const RegisterProviderScreen = () => {
   const tiposLocker = ["Chico", "Mediano", "Grande"];
@@ -30,8 +32,6 @@ const RegisterProviderScreen = () => {
   const [isAperPickerVisible, setAperPickerVisibility] = useState(false);
   const [isCierrePickerVisible, setCierrePickerVisibility] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
-  const [aper, setAper] = useState("");
-  const [cierre, setCierre] = useState("");
   const [horario, setHorario] = useState({
     apertura: "",
     cierre: "",
@@ -87,7 +87,7 @@ const RegisterProviderScreen = () => {
     setHorario({
       ...horario,
       day: dia,
-    })
+    });
     setAperPickerVisibility(true);
     setCierrePickerVisibility(false);
   };
@@ -96,7 +96,7 @@ const RegisterProviderScreen = () => {
     setHorario({
       ...horario,
       day: dia,
-    })
+    });
     setAperPickerVisibility(false);
     setCierrePickerVisibility(true);
   };
@@ -115,7 +115,6 @@ const RegisterProviderScreen = () => {
       time.getHours(),
       time.getMinutes()
     );
-    setAper(time.getHours() + ":" + time.getMinutes());
     setHorario({
       ...horario,
       apertura: time.getHours() + ":" + time.getMinutes(),
@@ -129,7 +128,6 @@ const RegisterProviderScreen = () => {
       time.getHours(),
       time.getMinutes()
     );
-    setCierre(time.getHours() + ":" + time.getMinutes());
     hideCierrePicker();
     setHorario({
       ...horario,
@@ -154,16 +152,20 @@ const RegisterProviderScreen = () => {
   };
 
   const handleOpenAper = (dia) => {
-   if (horario.day === '') {
-     showAperPicker(dia);
-   }
-  }
+    if (horario.apertura === "") {
+      showAperPicker(dia);
+    }
+  };
 
   const handleOpenCierre = (dia) => {
-    if (horario.day === '') {
+    if (horario.cierre === "") {
       showCierrePicker(dia);
     }
-  }
+  };
+
+  useEffect(() => {
+    diasSeleccionados.length === 0 && setHorario({ apertura: "", cierre: "", day: "" });
+  }, [diasSeleccionados]);
 
   const navigation = useNavigation();
 
@@ -173,7 +175,7 @@ const RegisterProviderScreen = () => {
         <View style={styles.container}>
           <Image
             style={styles.image}
-            source={require("../Register/images/LOGO.png")}
+            source={require("../../assets/images/LOGO.png")}
           />
           <Text style={styles.text}>Datos del titular</Text>
           <TextInput
@@ -271,27 +273,12 @@ const RegisterProviderScreen = () => {
             >
               <>
                 {tiposLocker.map((lock) => (
-                  <BouncyCheckbox
+                  <Checkbox1
+                    setTipo={setTipo}
+                    lock={lock}
+                    tipo={tipo}
                     key={lock}
-                    style={styles.selector}
-                    onPress={() => {
-                      if (tipo.find((t) => t === lock) === undefined) {
-                        setTipo([...tipo, lock]);
-                      } else {
-                        setTipo(tipo.filter((t) => t !== lock));
-                      }
-                    }}
-                    size={25}
-                    fillColor="#DF4F1A"
-                    unfillColor="#FFFFFF"
-                    name={lock}
-                    text={lock}
-                    textStyle={{
-                      fontSize: 15,
-                      color: "#DF4F1A",
-                      textDecorationLine: "none",
-                    }}
-                  ></BouncyCheckbox>
+                  />
                 ))}
               </>
             </View>
@@ -301,73 +288,53 @@ const RegisterProviderScreen = () => {
             <Text style={styles.text}>Elija los dias que abre</Text>
 
             {dias.map((dia) => (
-              <BouncyCheckbox
-                size={25}
-                fillColor="#DF4F1A"
-                unfillColor="#FFFFFF"
-                name={dia}
-                text={dia}
-                onPress={() => {
-                  if (diasSeleccionados.includes(dia)) {
-                    setDiasSeleccionados(
-                      diasSeleccionados.filter((d) => d !== dia)
-                    );
-                  } else {
-                    setDiasSeleccionados([...diasSeleccionados, dia]);
-                  }
-                  setIsChecked(!isChecked);
-                  handleCheck(dia);
-                  console.log(dataTiming);
-                }}
+              <Checkbox2
+                dia={dia}
+                diasSeleccionados={diasSeleccionados}
+                setDiasSeleccionados={setDiasSeleccionados}
+                setIsChecked={setIsChecked}
+                isChecked={setIsChecked}
+                handleCheck={handleCheck}
+                dataTiming={dataTiming}
                 key={dia}
-                iconStyle={{
-                  borderColor: "#DF4F1A",
-                  borderWidth: 1,
-                  borderRadius: 5,
-                  padding: 5,
-                  margin: 5,
-                  marginTop: 10,
-                  marginBottom: 10,
-                }}
-                textStyle={{
-                  textDecorationLine: "none",
-                  color: "white",
-                }}
               />
             ))}
           </View>
 
-          {diasSeleccionados.map((dia) => (
-            <View style={{ marginTop: 15 }} key={dia}>
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                }}
-              >
-                <Text style={styles.text} key={dia}>
-                  {dia}
-                </Text>
-                <Text style={styles.text}>Franja Horaria</Text>
+          {
+            diasSeleccionados.map((dia) => {
+              return(
+              <View style={{ marginTop: 15 }} key={dia}>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <Text style={styles.text} key={dia}>
+                    {dia}
+                  </Text>
+                  <Text style={styles.text}>Franja Horaria</Text>
+                </View>
+                <Button title="Apertura" onPress={() => handleOpenAper(dia)} />
+                <Button title="Cierre" onPress={() => handleOpenCierre(dia)} />
+                <DateTimePickerModal
+                  isVisible={isAperPickerVisible}
+                  mode="time"
+                  onConfirm={handleConfirmAper}
+                  onCancel={hideAperPicker}
+                  display="spinner"
+                />
+                <DateTimePickerModal
+                  isVisible={isCierrePickerVisible}
+                  mode="time"
+                  onConfirm={handleConfirmCierre}
+                  onCancel={hideCierrePicker}
+                  display="spinner"
+                />
               </View>
-              <Button title="Apertura" onPress={()=>handleOpenAper(dia)} />
-              <Button title="Cierre" onPress={()=>handleOpenCierre(dia)} />
-              <DateTimePickerModal
-                isVisible={isAperPickerVisible}
-                mode="time"
-                onConfirm={handleConfirmAper}
-                onCancel={hideAperPicker}
-                display="spinner"
-              />
-              <DateTimePickerModal
-                isVisible={isCierrePickerVisible}
-                mode="time"
-                onConfirm={handleConfirmCierre}
-                onCancel={hideCierrePicker}
-                display="spinner"
-              />
-            </View>
-          ))}
+            )})
+          }
 
           <TouchableOpacity style={styles.orangebutton} onPress={registrar}>
             <View style={styles.centerText}>
@@ -386,7 +353,7 @@ const RegisterProviderScreen = () => {
 
 export default RegisterProviderScreen;
 
-const styles = StyleSheet.create({
+export const styles = StyleSheet.create({
   container: {
     flex: 1,
     marginTop: 55,
@@ -432,12 +399,6 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     marginTop: 28,
     marginBottom: 8,
-  },
-  selector: {
-    padding: 10,
-    width: "32%",
-    borderRadius: 8,
-    marginTop: 8,
   },
   image: {
     marginTop: 40,
