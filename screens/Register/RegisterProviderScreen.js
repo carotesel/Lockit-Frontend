@@ -12,7 +12,6 @@ import {
 import React, { useState, useEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
-import BouncyCheckbox from "react-native-bouncy-checkbox";
 import Checkbox1 from "../../components/Checkbox1";
 import Checkbox2 from "../../components/Checkbox2";
 
@@ -167,6 +166,7 @@ const RegisterProviderScreen = () => {
     diasSeleccionados.length === 0 && setHorario({ apertura: "", cierre: "", day: "" });
   }, [diasSeleccionados]);
 
+  
   const navigation = useNavigation();
 
   return (
@@ -318,6 +318,13 @@ const RegisterProviderScreen = () => {
                 </View>
                 <Button title="Apertura" onPress={() => handleOpenAper(dia)} />
                 <Button title="Cierre" onPress={() => handleOpenCierre(dia)} />
+                <TouchableOpacity style={{alignItems: "center"}}>
+                  <Text style={styles.orangeText}>Confirmar</Text>
+                </TouchableOpacity>
+                
+                <TouchableOpacity> 
+                  <Text style={styles.text}>Agregar Franja horaria</Text>
+                </TouchableOpacity>
                 <DateTimePickerModal
                   isVisible={isAperPickerVisible}
                   mode="time"
@@ -402,5 +409,14 @@ export const styles = StyleSheet.create({
   },
   image: {
     marginTop: 40,
+  },
+  orangeText: {
+    color: "#DF4F1A",
+    alignItems: "center",
+    justifyContent: "center",
+    fontSize: 20,
+    marginBottom: 8,
+    marginTop: 10,
+    marginLeft: 10,
   },
 });

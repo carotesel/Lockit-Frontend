@@ -9,16 +9,12 @@ import {
 import React from "react";
 import { useNavigation } from "@react-navigation/native";
 import { useState } from "react";
-import PhoneInput from 'react-native-phone-input';
+import PhoneInput from "react-native-phone-input";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 import axios from "axios";
-
-
-
-
+import DateTimePickerModal from "react-native-modal-datetime-picker";
 
 const RegisterScreen = () => {
-  
   const navigation = useNavigation();
   const users = ["proveedor", "cliente"];
 
@@ -26,15 +22,17 @@ const RegisterScreen = () => {
     nombre: undefined,
     apellido: undefined,
     email: undefined,
-    user: undefined, 
-    contra: undefined, 
+    user: undefined,
+    contra: undefined,
     userName: undefined,
-  
   });
 
-  const [phone, setPhone] = useState('');
-  const [userChecked, setUserChecked] = useState('');
+  const [phone, setPhone] = useState("");
+  const [userChecked, setUserChecked] = useState("");
+  const [dateVisible, setDateVisible] = useState(false);
+  const [date, setDate] = useState("");
 
+  console.log(date);
 
   const handleInput = (e, name) => {
     setData({
@@ -45,13 +43,13 @@ const RegisterScreen = () => {
 
   const registrar = async () => {
     try {
-     // await postData();
+      // await postData();
       navigation.reset({
         index: 0,
         routes: [{ name: "Rprovider" }],
       });
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   };
 
@@ -61,23 +59,25 @@ const RegisterScreen = () => {
       apellido: data.apellido,
       mail: data.email,
       contrasenia: data.contra,
-      telefono: phone, 
-      fechaNac: "2020-09-10",
-      fkRol: data.user, 
+      telefono: phone,
+      fechaNac: date,
+      fkRol: data.user,
       username: data.userName,
     };
     try {
       console.log("creando");
-      const response = await axios.post("https://lockit-backend-anto.herokuapp.com/api/users/createUser", body);
+      const response = await axios.post(
+        "https://lockit-backend-anto.herokuapp.com/api/users/createUser",
+        body
+      );
       console.log(response);
-      if (response.status === 200) {
+      if (response.status === 201) {
         console.log("Se registro correctamente");
       }
-      }
-    catch (error) {
+    } catch (error) {
       console.log(error);
     }
-  }
+  };
 
   const handleUser = (e) => {
     setUserChecked(e);
@@ -86,8 +86,7 @@ const RegisterScreen = () => {
         ...data,
         user: undefined,
       });
-    }
-    else if (e === "proveedor") {
+    } else if (e === "proveedor") {
       setData({
         ...data,
         user: 1,
@@ -98,10 +97,13 @@ const RegisterScreen = () => {
         user: 2,
       });
     }
-   
+  };
+
+  const handleDate = (date) => {
+    setDateVisible(false);
+    setDate(date);
   }
   
- 
 
   return (
     <View style={styles.container}>
@@ -110,20 +112,36 @@ const RegisterScreen = () => {
         source={require("../../assets/images/LOGO.png")}
       />
 
-      <TextInput style={styles.textInput} placeholder="Nombre" name="nombre" onChange={(e) => handleInput(e,"nombre")}  placeholderTextColor="#adaaaa" 
-/>
+      <TextInput
+        style={styles.textInput}
+        placeholder="Nombre"
+        name="nombre"
+        onChange={(e) => handleInput(e, "nombre")}
+        placeholderTextColor="#adaaaa"
+      />
 
-      <TextInput style={styles.textInput} placeholder="Apellido" name="apellido" onChange={(e) => handleInput(e,"apellido" )}  placeholderTextColor="#adaaaa" 
-/>
+      <TextInput
+        style={styles.textInput}
+        placeholder="Apellido"
+        name="apellido"
+        onChange={(e) => handleInput(e, "apellido")}
+        placeholderTextColor="#adaaaa"
+      />
 
-      <TextInput style={styles.textInput} placeholder="Email" name="email" onChange={(e) => handleInput(e, "email")} placeholderTextColor="#adaaaa" />
+      <TextInput
+        style={styles.textInput}
+        placeholder="Email"
+        name="email"
+        onChange={(e) => handleInput(e, "email")}
+        placeholderTextColor="#adaaaa"
+      />
 
       <TextInput
         style={styles.textInput}
         placeholder="Nombre de Usuario"
         name="userName"
-        onChange={(e) => handleInput(e,"userName")}
-        placeholderTextColor="#adaaaa" 
+        onChange={(e) => handleInput(e, "userName")}
+        placeholderTextColor="#adaaaa"
       />
 
       <TextInput
@@ -131,7 +149,7 @@ const RegisterScreen = () => {
         placeholder="Contraseña"
         name="contra"
         onChange={(e) => handleInput(e, "contra")}
-        placeholderTextColor="#adaaaa" 
+        placeholderTextColor="#adaaaa"
       />
 
       <PhoneInput
@@ -139,13 +157,26 @@ const RegisterScreen = () => {
         style={styles.textInput}
         onChangePhoneNumber={(phone) => setPhone(phone)}
         textProps={{
-          placeholder: 'Teléfono',
-          placeholderTextColor: '#adaaaa',
-      }}
+          placeholder: "Teléfono",
+          placeholderTextColor: "#adaaaa",
+        }}
         flagStyle={{
           width: 35,
           height: 20,
         }}
+      />
+
+      <TouchableOpacity
+        style={styles.textInput}
+       onPress={() => setDateVisible(true)} >
+      <Text style={styles.grayText}>Fecha de Nacimiento</Text>
+      </TouchableOpacity>
+
+      <DateTimePickerModal
+        isVisible={dateVisible}
+        mode="date"
+        onConfirm={(date) => handleDate(date)}
+        onCancel={() => setDateVisible(false)}
       />
 
       {users.map((user) => (
@@ -156,20 +187,17 @@ const RegisterScreen = () => {
             fontSize: 15,
             color: "#FFFFFF",
             textDecorationLine: "none",
-          }}   
-          onPress={() => 
-          handleUser(user)        
-        }
+          }}
+          onPress={() => handleUser(user)}
         />
       ))}
-      
 
       <TouchableOpacity
         style={styles.orangebutton}
         onPress={async () => await registrar()}
       >
         <View style={styles.centerText}>
-          <Text style={styles.text} >Registrarme</Text>
+          <Text style={styles.text}>Registrarme</Text>
         </View>
       </TouchableOpacity>
     </View>
@@ -222,5 +250,20 @@ const styles = StyleSheet.create({
   },
   image: {
     marginBottom: 25,
+  },
+  button: {
+    backgroundColor: "#fff",
+    borderWidth: 1,
+    padding: 15,
+    width: "65%",
+    borderRadius: 8,
+    marginTop: 20,
+    marginBottom: 8,
+  },
+  grayText: {
+    color: "#adaaaa",
+    alignItems: "center",
+    justifyContent: "center",
+    fontSize: 14,
   },
 });
