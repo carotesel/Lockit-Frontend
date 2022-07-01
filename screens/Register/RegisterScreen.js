@@ -13,10 +13,14 @@ import PhoneInput from "react-native-phone-input";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 import axios from "axios";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
+import { useContext } from "react";
+import { RegisterContext, RegisterProvider } from "../../context/registerContext";
 
 const RegisterScreen = () => {
   const navigation = useNavigation();
   const users = ["proveedor", "cliente"];
+
+  const {hola} = useContext(RegisterContext);
 
   const [data, setData] = useState({
     nombre: undefined,

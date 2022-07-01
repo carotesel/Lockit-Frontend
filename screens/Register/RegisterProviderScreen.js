@@ -166,7 +166,15 @@ const RegisterProviderScreen = () => {
     diasSeleccionados.length === 0 && setHorario({ apertura: "", cierre: "", day: "" });
   }, [diasSeleccionados]);
 
-  
+
+  const handleDatatiming = (horario) => {
+    setDataTiming({
+      ...dataTiming,
+      [horario.day]: [...dataTiming[horario.day], {apertura: horario.apertura, cierre: horario.cierre}],
+    });
+  }
+
+
   const navigation = useNavigation();
 
   return (
@@ -318,7 +326,7 @@ const RegisterProviderScreen = () => {
                 </View>
                 <Button title="Apertura" onPress={() => handleOpenAper(dia)} />
                 <Button title="Cierre" onPress={() => handleOpenCierre(dia)} />
-                <TouchableOpacity style={{alignItems: "center"}}>
+                <TouchableOpacity style={{alignItems: "center"}} onPress={() => handleDatatiming(horario)}>
                   <Text style={styles.orangeText}>Confirmar</Text>
                 </TouchableOpacity>
                 
