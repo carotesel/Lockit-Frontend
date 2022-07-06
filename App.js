@@ -5,6 +5,7 @@ import RegisterScreen from "./screens/Register/RegisterScreen";
 import RegisterProviderScreen from "./screens/Register/RegisterProviderScreen";
 import Navigation from './Navigation';
 import { RegisterProvider } from './context/registerContext';
+import LoginScreen from './screens/Login/LoginScreen';
 
 export default function App() {
 
@@ -25,6 +26,11 @@ export default function App() {
           options={{
             headerShown: false,
           }}
+          />
+          <Stack.Screen name="Login" component={LoginScreen}
+            options={{
+              headerShown: false,
+            }}
           />
           <Stack.Screen name="Nav" component={Navigation} 
           options={{

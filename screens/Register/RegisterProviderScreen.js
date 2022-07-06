@@ -77,7 +77,7 @@ const RegisterProviderScreen = () => {
   const registrar = () => {
     navigation.reset({
       index: 0,
-      routes: [{ name: "Nav" }],
+      routes: [{ name: "Login" }],
     });
     console.log(data);
   };
