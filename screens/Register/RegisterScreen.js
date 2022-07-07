@@ -11,16 +11,14 @@ import { useNavigation } from "@react-navigation/native";
 import { useState } from "react";
 import PhoneInput from "react-native-phone-input";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
-import axios from "axios";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { useContext } from "react";
-import { RegisterContext, RegisterProvider } from "../../context/registerContext";
+import { AuthContext } from "../../context/AuthContext";
 
 const RegisterScreen = () => {
   const navigation = useNavigation();
   const users = ["proveedor", "cliente"];
-
-  const {hola} = useContext(RegisterContext);
+  const {registerUser} = useContext(AuthContext);
 
   const [data, setData] = useState({
     nombre: undefined,
@@ -47,7 +45,7 @@ const RegisterScreen = () => {
 
   const registrar = async () => {
     try {
-      // await postData();
+      // await postData(); que esta en context lol
       navigation.reset({
         index: 0,
         routes: [{ name: "Rprovider" }],
@@ -57,31 +55,6 @@ const RegisterScreen = () => {
     }
   };
 
-  const postData = async () => {
-    const body = {
-      nombre: data.nombre,
-      apellido: data.apellido,
-      mail: data.email,
-      contrasenia: data.contra,
-      telefono: phone,
-      fechaNac: date,
-      fkRol: data.user,
-      username: data.userName,
-    };
-    try {
-      console.log("creando");
-      const response = await axios.post(
-        "https://lockit-backend-anto.herokuapp.com/api/users/createUser",
-        body
-      );
-      console.log(response);
-      if (response.status === 201) {
-        console.log("Se registro correctamente");
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   const handleUser = (e) => {
     setUserChecked(e);
