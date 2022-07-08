@@ -26,11 +26,13 @@ const RegisterProviderScreen = () => {
     "Sabado",
     "Domingo",
   ];
-  const [tipo, setTipo] = useState([]);
+  const [tipo, setTipo] = useState([]); // tipo de locker
   const [diasSeleccionados, setDiasSeleccionados] = useState([]);
   const [isAperPickerVisible, setAperPickerVisibility] = useState(false);
   const [isCierrePickerVisible, setCierrePickerVisibility] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
+  const apertura = null;
+  const cierre = null;
   const [horario, setHorario] = useState({
     apertura: "",
     cierre: "",
@@ -111,12 +113,13 @@ const RegisterProviderScreen = () => {
   const handleConfirmAper = (time) => {
     console.log(
       "APER - A date has been picked: ",
-      time.getHours(),
-      time.getMinutes()
+      time.getHours().toString().padStart(2, "0"),
+      time.getMinutes().toString().padStart(2, "0")
     );
     setHorario({
       ...horario,
-      apertura: time.getHours() + ":" + time.getMinutes(),
+      apertura:
+      time.getHours().toString().padStart(2, "0") + ":" + time.getMinutes().toString().padStart(2, "0"),
     });
     hideAperPicker();
   };
@@ -130,7 +133,7 @@ const RegisterProviderScreen = () => {
     hideCierrePicker();
     setHorario({
       ...horario,
-      cierre: time.getHours() + ":" + time.getMinutes(),
+      cierre: time.getHours().toString().padStart(2, "0") + ":" + time.getMinutes().toString().padStart(2, "0"),
     });
   };
 
@@ -163,17 +166,19 @@ const RegisterProviderScreen = () => {
   };
 
   useEffect(() => {
-    diasSeleccionados.length === 0 && setHorario({ apertura: "", cierre: "", day: "" });
+    diasSeleccionados.length === 0 &&
+      setHorario({ apertura: "", cierre: "", day: "" });
   }, [diasSeleccionados]);
-
 
   const handleDatatiming = (horario) => {
     setDataTiming({
       ...dataTiming,
-      [horario.day]: [...dataTiming[horario.day], {apertura: horario.apertura, cierre: horario.cierre}],
+      [horario.day]: [
+        ...dataTiming[horario.day],
+        { apertura: horario.apertura, cierre: horario.cierre },
+      ],
     });
-  }
-
+  };
 
   const navigation = useNavigation();
 
@@ -309,9 +314,8 @@ const RegisterProviderScreen = () => {
             ))}
           </View>
 
-          {
-            diasSeleccionados.map((dia) => {
-              return(
+          {diasSeleccionados.map((dia) => {
+            return (
               <View style={{ marginTop: 15 }} key={dia}>
                 <View
                   style={{
@@ -326,11 +330,14 @@ const RegisterProviderScreen = () => {
                 </View>
                 <Button title="Apertura" onPress={() => handleOpenAper(dia)} />
                 <Button title="Cierre" onPress={() => handleOpenCierre(dia)} />
-                <TouchableOpacity style={{alignItems: "center"}} onPress={() => handleDatatiming(horario)}>
+                <TouchableOpacity
+                  style={{ alignItems: "center" }}
+                  onPress={() => handleDatatiming(horario)}
+                >
                   <Text style={styles.orangeText}>Confirmar</Text>
                 </TouchableOpacity>
-                
-                <TouchableOpacity> 
+
+                <TouchableOpacity>
                   <Text style={styles.text}>Agregar Franja horaria</Text>
                 </TouchableOpacity>
                 <DateTimePickerModal
@@ -348,8 +355,8 @@ const RegisterProviderScreen = () => {
                   display="spinner"
                 />
               </View>
-            )})
-          }
+            );
+          })}
 
           <TouchableOpacity style={styles.orangebutton} onPress={registrar}>
             <View style={styles.centerText}>
