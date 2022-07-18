@@ -1,7 +1,24 @@
 import { View, Text, StyleSheet, Image, TextInput, TouchableOpacity } from "react-native";
 import React from "react";
+import { useNavigation } from "@react-navigation/native";
+
 
 const LoginScreen = () => {
+
+  const navigation = useNavigation();
+  
+  const logIn = async () => {
+    try {
+      // await Login(); que esta en context lol
+      navigation.reset({
+        index: 0,
+        routes: [{ name: "Nav" }],
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <View style={styles.container}>
       <Image
@@ -25,6 +42,10 @@ const LoginScreen = () => {
 
       <TouchableOpacity
         style={styles.orangebutton}
+        onPress={async () => {
+          await logIn();
+        }
+        }
       >
         <View style={styles.centerText}>
           <Text style={styles.text}>Registrarme</Text>

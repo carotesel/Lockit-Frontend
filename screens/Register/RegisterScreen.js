@@ -45,7 +45,7 @@ const RegisterScreen = () => {
 
   const registrar = async () => {
     try {
-      // await postData(); que esta en context lol
+      // await RegisterUser(); que esta en context lol
       navigation.reset({
         index: 0,
         routes: [{ name: "Rprovider" }],

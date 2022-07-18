@@ -6,8 +6,6 @@ const Checkbox2 = ({
   dia,
   diasSeleccionados,
   setDiasSeleccionados,
-  setIsChecked,
-  isChecked,
   handleCheck,
   dataTiming,
 }) => {
@@ -23,8 +21,7 @@ const Checkbox2 = ({
           setDiasSeleccionados(diasSeleccionados.filter((d) => d !== dia));
         } else {
           setDiasSeleccionados([...diasSeleccionados, dia]);
-        }
-        setIsChecked(!isChecked);
+        };
         handleCheck(dia);
         console.log(dataTiming);
       }}

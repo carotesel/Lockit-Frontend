@@ -3,32 +3,41 @@ import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 import { Octicons } from "@expo/vector-icons";
+import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon2 from 'react-native-vector-icons/Octicons';
+import Icon3 from 'react-native-vector-icons/MaterialCommunityIcons';
+
+
+
 
 // screens
 import ProfileScreen from "./screens/ProfileScreen";
-import IndexStackScreen from "./stacks/IndexStackScreen";
+import MoneyScreen from "./screens/Provider/MoneyScreen";
 import LockersScreen from "./screens/LockersScreen";
+
+// icons:
 
 const Navigation = () => {
   const Tab = createBottomTabNavigator();
 
   return (
       <Tab.Navigator
-        initialRouteName="Home"
+        initialRouteName="Money"
         screenOptions={{
           tabBarActiveTintColor: "#DF4F1A",
           headerShown: false,
+          tabBarShowLabel: false,
         }}
       >
         
         <Tab.Screen
-          name="Home"
-          component={IndexStackScreen}
+          name="Money"
+          component={MoneyScreen}
           options={{
             headerShown: false,
             tabBarIcon: ({ color, size }) => (
-              <Ionicons name="search" size={35} color={color} />
-            ),
+              <Icon name="money" size={42} color={color} style={{marginTop: 8}}/>
+              ),
           }}
         />
 
@@ -37,8 +46,8 @@ const Navigation = () => {
           component={LockersScreen}
           options={{
             tabBarIcon: ({ color, size }) => (
-              <MaterialCommunityIcons name="locker" size={35} color={color} />
-            ),
+              <Icon2 name="shield-lock" size={38} color={color} style={{marginTop: 10}} />
+              ),
           }}
         />
 
@@ -47,8 +56,8 @@ const Navigation = () => {
           component={ProfileScreen}
           options={{
             tabBarIcon: ({ color, size }) => (
-              <Octicons name="person" size={30} color={color} />
-            ),
+              <Icon3 name="storefront-outline" size={45} color={color} style={{marginTop: 8}} />
+                        ),
           }}
         />
       </Tab.Navigator>

@@ -8,12 +8,14 @@ import {
   TouchableOpacity,
   Image,
   Button,
+  Modal,
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import Checkbox1 from "../../components/Checkbox1";
 import Checkbox2 from "../../components/Checkbox2";
+import Icon from "react-native-vector-icons/Entypo";
 
 const RegisterProviderScreen = () => {
   const tiposLocker = ["Chico", "Mediano", "Grande"];
@@ -30,9 +32,7 @@ const RegisterProviderScreen = () => {
   const [diasSeleccionados, setDiasSeleccionados] = useState([]);
   const [isAperPickerVisible, setAperPickerVisibility] = useState(false);
   const [isCierrePickerVisible, setCierrePickerVisibility] = useState(false);
-  const [isChecked, setIsChecked] = useState(false);
-  const apertura = null;
-  const cierre = null;
+  const [isPicked, setIsPicked] = useState(false);
   const [horario, setHorario] = useState({
     apertura: "",
     cierre: "",
@@ -77,6 +77,7 @@ const RegisterProviderScreen = () => {
   };
 
   const registrar = () => {
+    // await postData(); que esta en context lol
     navigation.reset({
       index: 0,
       routes: [{ name: "Login" }],
@@ -119,7 +120,9 @@ const RegisterProviderScreen = () => {
     setHorario({
       ...horario,
       apertura:
-      time.getHours().toString().padStart(2, "0") + ":" + time.getMinutes().toString().padStart(2, "0"),
+        time.getHours().toString().padStart(2, "0") +
+        ":" +
+        time.getMinutes().toString().padStart(2, "0"),
     });
     hideAperPicker();
   };
@@ -133,7 +136,10 @@ const RegisterProviderScreen = () => {
     hideCierrePicker();
     setHorario({
       ...horario,
-      cierre: time.getHours().toString().padStart(2, "0") + ":" + time.getMinutes().toString().padStart(2, "0"),
+      cierre:
+        time.getHours().toString().padStart(2, "0") +
+        ":" +
+        time.getMinutes().toString().padStart(2, "0"),
     });
   };
 
@@ -145,11 +151,13 @@ const RegisterProviderScreen = () => {
         ...dataTiming,
         [name]: [],
       });
+      setIsPicked(true);
     } else {
       setDataTiming({
         ...dataTiming,
         [name]: undefined,
       });
+      setIsPicked(false);
     }
   };
 
@@ -305,56 +313,75 @@ const RegisterProviderScreen = () => {
                 dia={dia}
                 diasSeleccionados={diasSeleccionados}
                 setDiasSeleccionados={setDiasSeleccionados}
-                setIsChecked={setIsChecked}
-                isChecked={setIsChecked}
+                key={dia}
                 handleCheck={handleCheck}
                 dataTiming={dataTiming}
-                key={dia}
               />
             ))}
           </View>
 
           {diasSeleccionados.map((dia) => {
             return (
-              <View style={{ marginTop: 15 }} key={dia}>
-                <View
-                  style={{
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                  }}
-                >
-                  <Text style={styles.text} key={dia}>
-                    {dia}
-                  </Text>
-                  <Text style={styles.text}>Franja Horaria</Text>
-                </View>
-                <Button title="Apertura" onPress={() => handleOpenAper(dia)} />
-                <Button title="Cierre" onPress={() => handleOpenCierre(dia)} />
-                <TouchableOpacity
-                  style={{ alignItems: "center" }}
-                  onPress={() => handleDatatiming(horario)}
-                >
-                  <Text style={styles.orangeText}>Confirmar</Text>
-                </TouchableOpacity>
+              <Modal
+                transparent
+                visible={isPicked}
+                key={dia}
+                animationType="slide"
+              >
+                <View style={styles.modalBackGround}>
+                  <View style={styles.modalView}>
+                    <View
+                      style={{
+                        flexDirection: "row",
+                      }}
+                    >
+                      <Icon name="cross" size={30} color="#DF4F1A" onPress={()=> setIsPicked(false)} />
+                      <View style={{ alignItems: "center", marginLeft: 85 }}>
+                        <Text style={styles.textNegro} key={dia}>
+                          {dia}
+                        </Text>
+                      </View>
+                    </View>
+                    <View style={{marginTop: 20, marginStart: 5, marginRight: 200}}>
+                    <Button
+                      title="Apertura"
+                      onPress={() => handleOpenAper(dia)}
+                    />
+                    <Button
+                      title="Cierre"
+                      onPress={() => handleOpenCierre(dia)}
+                    />                    
+                    </View>
 
-                <TouchableOpacity>
-                  <Text style={styles.text}>Agregar Franja horaria</Text>
-                </TouchableOpacity>
-                <DateTimePickerModal
-                  isVisible={isAperPickerVisible}
-                  mode="time"
-                  onConfirm={handleConfirmAper}
-                  onCancel={hideAperPicker}
-                  display="spinner"
-                />
-                <DateTimePickerModal
-                  isVisible={isCierrePickerVisible}
-                  mode="time"
-                  onConfirm={handleConfirmCierre}
-                  onCancel={hideCierrePicker}
-                  display="spinner"
-                />
-              </View>
+                    <TouchableOpacity
+                      style={{ alignItems: "center" }}
+                      onPress={() => handleDatatiming(horario)}
+                    >
+                      <Text style={styles.orangeText}>Confirmar</Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity style={{ marginTop: 30 }}>
+                      <Text style={{ color: "#000000" }}>
+                        Agregar Franja horaria
+                      </Text>
+                    </TouchableOpacity>
+                    <DateTimePickerModal
+                      isVisible={isAperPickerVisible}
+                      mode="time"
+                      onConfirm={handleConfirmAper}
+                      onCancel={hideAperPicker}
+                      display="spinner"
+                    />
+                    <DateTimePickerModal
+                      isVisible={isCierrePickerVisible}
+                      mode="time"
+                      onConfirm={handleConfirmCierre}
+                      onCancel={hideCierrePicker}
+                      display="spinner"
+                    />
+                  </View>
+                </View>
+              </Modal>
             );
           })}
 
@@ -408,7 +435,7 @@ export const styles = StyleSheet.create({
     color: "#000000",
     alignItems: "center",
     justifyContent: "center",
-    fontSize: 15,
+    fontSize: 30,
   },
   centerText: {
     alignItems: "center",
@@ -433,5 +460,24 @@ export const styles = StyleSheet.create({
     marginBottom: 8,
     marginTop: 10,
     marginLeft: 10,
+  },
+  modalView: {
+    backgroundColor: "white",
+    marginTop: 180,
+    paddingHorizontal: 25,
+    width: "88%",
+    paddingVertical: 45,
+    borderRadius: 20,
+    shadowColor: "black",
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.2,
+    shadowRadius: 10,
+    borderWidth: 1,
+  },
+  modalBackGround: {
+    flex: 1,
+    backgroundColor: "rgba(0,0,0,0.6)",
+    width: "100%",
+    alignItems: "center",
   },
 });
