@@ -10,13 +10,14 @@ const LoginScreen = () => {
   const logIn = async () => {
     try {
       // await Login(); que esta en context lol
-      navigation.reset({
-        index: 0,
-        routes: [{ name: "Nav" }],
-      });
+      
     } catch (error) {
       console.log(error);
     }
+    navigation.reset({
+        index: 0,
+        routes: [{ name: "Nav" }],
+      });
   };
 
   return (

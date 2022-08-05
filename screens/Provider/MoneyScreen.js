@@ -12,7 +12,7 @@ const MoneyScreen = () => {
                       textAlign: "center",
                      marginTop: "20%"
                  }}>
-    MoneyScreen</Text>
+    Welcome -user-!</Text>
       </View>
   );
 };

@@ -33,6 +33,7 @@ const RegisterProviderScreen = () => {
   const [isAperPickerVisible, setAperPickerVisibility] = useState(false);
   const [isCierrePickerVisible, setCierrePickerVisibility] = useState(false);
   const [isPicked, setIsPicked] = useState(false);
+  const [name, setName] = useState("");
   const [horario, setHorario] = useState({
     apertura: "",
     cierre: "",
@@ -52,6 +53,7 @@ const RegisterProviderScreen = () => {
   console.log(tipo);
   console.log(dataTiming);
   console.log(horario);
+  console.log("days", diasSeleccionados);
 
   const [data, setData] = useState({
     nombre: undefined,
@@ -159,6 +161,7 @@ const RegisterProviderScreen = () => {
       });
       setIsPicked(false);
     }
+    setName(name);
   };
 
   const handleOpenAper = (dia) => {
@@ -186,7 +189,10 @@ const RegisterProviderScreen = () => {
         { apertura: horario.apertura, cierre: horario.cierre },
       ],
     });
+    setIsPicked(false);
+    setHorario({ apertura: "", cierre: "", day: "" });
   };
+
 
   const navigation = useNavigation();
 
@@ -337,34 +343,47 @@ const RegisterProviderScreen = () => {
                     >
                       <Icon name="cross" size={30} color="#DF4F1A" onPress={()=> setIsPicked(false)} />
                       <View style={{ alignItems: "center", marginLeft: 85 }}>
-                        <Text style={styles.textNegro} key={dia}>
-                          {dia}
+                        <Text style={styles.textNegro} key={name}>
+                          {name}
                         </Text>
                       </View>
                     </View>
-                    <View style={{marginTop: 20, marginStart: 5, marginRight: 200}}>
+                    <View style={{marginTop: 20, marginStart: 2, marginRight: 80}}>
+                   
+                   <View style={{flexDirection: "row", justifyContent: "space-between"}}>
                     <Button
-                      title="Apertura"
-                      onPress={() => handleOpenAper(dia)}
+                      title="Horario apertura"
+                      onPress={() => handleOpenAper(name)}
                     />
+                    <View style={{marginLeft: 10}}>
+                    <Text style={styles.textModal}>{horario.apertura}</Text>
+                    </View>
+                    </View>
+
+                    <View style={{flexDirection: "row", justifyContent: "space-between"}}>
                     <Button
-                      title="Cierre"
-                      onPress={() => handleOpenCierre(dia)}
-                    />                    
+                      title="Horario cierre"
+                      onPress={() => handleOpenCierre(name)}
+                    />    
+                    <View style={{marginLeft: 35}}>
+                    <Text style={styles.textModal}>{horario.cierre}</Text>
+                    </View>
+                    </View>                
                     </View>
 
                     <TouchableOpacity
-                      style={{ alignItems: "center" }}
+                      style={{ alignItems: "center", marginTop: 20 }}
                       onPress={() => handleDatatiming(horario)}
                     >
                       <Text style={styles.orangeText}>Confirmar</Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={{ marginTop: 30 }}>
+                   {/*<TouchableOpacity style={{ marginTop: 30 }}>
                       <Text style={{ color: "#000000" }}>
                         Agregar Franja horaria
                       </Text>
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
+                    
                     <DateTimePickerModal
                       isVisible={isAperPickerVisible}
                       mode="time"
@@ -435,7 +454,7 @@ export const styles = StyleSheet.create({
     color: "#000000",
     alignItems: "center",
     justifyContent: "center",
-    fontSize: 30,
+    fontSize: 28,
   },
   centerText: {
     alignItems: "center",
@@ -479,5 +498,14 @@ export const styles = StyleSheet.create({
     backgroundColor: "rgba(0,0,0,0.6)",
     width: "100%",
     alignItems: "center",
+  },
+  textModal: {
+    color: "#000000",
+    alignItems: "center",
+    justifyContent: "center",
+    fontSize: 18,
+    marginBottom: 8,
+    marginLeft: 10,
+    marginTop: 6,
   },
 });
