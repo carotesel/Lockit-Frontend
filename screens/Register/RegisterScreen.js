@@ -14,20 +14,24 @@ import BouncyCheckbox from "react-native-bouncy-checkbox";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
+import SelectDropdown from 'react-native-select-dropdown'
+
 
 const RegisterScreen = () => {
   const navigation = useNavigation();
-  const users = ["proveedor", "cliente"];
+  const users = ["Proveedor", "Cliente"];
   const {registerUser} = useContext(AuthContext);
 
   const [data, setData] = useState({
     nombre: undefined,
     apellido: undefined,
     email: undefined,
-    user: undefined,
     contra: undefined,
     userName: undefined,
+    user: undefined,
   });
+
+  console.log(data);
 
   const [phone, setPhone] = useState("");
   const [userChecked, setUserChecked] = useState("");
@@ -43,37 +47,26 @@ const RegisterScreen = () => {
     });
   };
 
-  const registrar = async () => {
-    try {
-      // await RegisterUser(); que esta en context lol
-      navigation.reset({
-        index: 0,
-        routes: [{ name: "Rprovider" }],
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
 
   const handleUser = (e) => {
     setUserChecked(e);
-    if (e !== "proveedor" && e !== "cliente") {
+    if (e !== "Proveedor" && e !== "Cliente") {
       setData({
         ...data,
         user: undefined,
       });
-    } else if (e === "proveedor") {
+    } else if (e === "Proveedor") {
       setData({
         ...data,
         user: 1,
       });
-    } else if (e === "cliente") {
+    } else if (e === "Cliente") {
       setData({
         ...data,
         user: 2,
       });
     }
+    console.log(data.user);
   };
 
   const handleDate = (date) => {
@@ -156,23 +149,20 @@ const RegisterScreen = () => {
         onCancel={() => setDateVisible(false)}
       />
 
-      {users.map((user) => (
-        <BouncyCheckbox
-          key={user}
-          text={user}
-          textStyle={{
-            fontSize: 15,
-            color: "#FFFFFF",
-            textDecorationLine: "none",
-          }}
-          onPress={() => handleUser(user)}
+        <SelectDropdown 
+          style={styles.selector}
+          data={users}
+          onSelect={(e) => handleUser(e)}
+          defaultButtonText="Seleccione una opción"
+          buttonStyle={styles.selector}
+          buttonTextStyle={{fontSize: 16}}
+          dropdownStyle={{borderRadius: 10}}
+          
         />
-      ))}
 
       <TouchableOpacity
         style={styles.orangebutton}
-        onPress={async () => await registrar()}
-      >
+        onPress={async() => await registerUser(data, phone)}>
         <View style={styles.centerText}>
           <Text style={styles.text}>Registrarme</Text>
         </View>
@@ -242,5 +232,15 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     fontSize: 14,
+  },
+  selector: {
+    borderWidth: 2,
+    padding: 5,
+    height: 50,
+    borderRadius: 8,
+    backgroundColor: "#fff",
+    marginTop: 8,
+    marginBottom: 8,
+    width: "85%",
   },
 });

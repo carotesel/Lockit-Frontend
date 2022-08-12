@@ -49,7 +49,7 @@ const LoginScreen = () => {
         }
       >
         <View style={styles.centerText}>
-          <Text style={styles.text}>Registrarme</Text>
+          <Text style={styles.text}>Iniciar Sesión</Text>
         </View>
       </TouchableOpacity>
 
@@ -60,6 +60,14 @@ const LoginScreen = () => {
         <Image source={require ('../../assets/images/media/facebook.png')} style={{marginLeft: 35}}/>
         <Image source={require ('../../assets/images/media/twitter.png')} style={{marginLeft: 35}}/>
       </View>
+
+      <View style={{flexDirection:"row", marginTop: 30, justifyContent:"space-around" }}>
+      <Text style={styles.text}>No te registraste aun? </Text>
+      <TouchableOpacity onPress={() => navigation.navigate("Rscreen")}>
+        <Text style={styles.orangeText}>Registrate</Text>
+      </TouchableOpacity>
+      </View>
+
     </View>
   );
 };
@@ -103,4 +111,11 @@ const styles = StyleSheet.create({
     marginTop: 20,
     marginBottom: 8,
   },
+  orangeText: {
+    color: "#DF4F1A",
+    alignItems: "center",
+    justifyContent: "center",
+    fontSize: 18,
+  },
+
 });
