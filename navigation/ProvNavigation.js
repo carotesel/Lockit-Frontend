@@ -11,13 +11,13 @@ import Icon3 from 'react-native-vector-icons/MaterialCommunityIcons';
 
 
 // screens
-import ProfileScreen from "./screens/ProfileScreen";
-import MoneyScreen from "./screens/Provider/MoneyScreen";
-import LockersScreen from "./screens/Provider/LockersScreen";
+import ProfileScreen from "../screens/ProfileScreen";
+import MoneyScreen from "../screens/Provider/MoneyScreen";
+import LockersScreen from "../screens/Provider/LockersScreen";
 
 // icons:
 
-const Navigation = () => {
+const ProvNavigation = () => {
   const Tab = createBottomTabNavigator();
 
   return (
@@ -64,4 +64,4 @@ const Navigation = () => {
   );
 };
 
-export default Navigation;
+export default ProvNavigation;

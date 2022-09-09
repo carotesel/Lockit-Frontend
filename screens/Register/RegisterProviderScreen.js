@@ -16,6 +16,9 @@ import DateTimePickerModal from "react-native-modal-datetime-picker";
 import Checkbox1 from "../../components/Checkbox1";
 import Checkbox2 from "../../components/Checkbox2";
 import Icon from "react-native-vector-icons/Entypo";
+import axios from "axios";
+import PhoneInput from "react-native-phone-input";
+import SelectDropdown from "react-native-select-dropdown";
 
 const RegisterProviderScreen = () => {
   const tiposLocker = ["Chico", "Mediano", "Grande"];
@@ -28,12 +31,15 @@ const RegisterProviderScreen = () => {
     "Sabado",
     "Domingo",
   ];
+  const security = ["Si", "No"];
   const [tipo, setTipo] = useState([]); // tipo de locker
   const [diasSeleccionados, setDiasSeleccionados] = useState([]);
   const [isAperPickerVisible, setAperPickerVisibility] = useState(false);
   const [isCierrePickerVisible, setCierrePickerVisibility] = useState(false);
   const [isPicked, setIsPicked] = useState(false);
   const [name, setName] = useState("");
+  const [securityChecked, setSecurityChecked] = useState(false);
+  const [is24, setIs24] = useState(false);
   const [horario, setHorario] = useState({
     apertura: "",
     cierre: "",
@@ -54,36 +60,73 @@ const RegisterProviderScreen = () => {
   console.log(dataTiming);
   console.log(horario);
   console.log("days", diasSeleccionados);
+  console.log("security", securityChecked);
+  console.log("is24", is24);
 
   const [data, setData] = useState({
     nombre: undefined,
     apellido: undefined,
-    email: undefined,
     dni: undefined,
+    email: undefined,
+    telefono: undefined,
     nombreComercio: undefined,
-    calle: undefined,
-    altura: undefined,
+    direccion: undefined,
     ciudad: undefined,
     codPostal: undefined,
     emailComercio: undefined,
+    telefonoPublico: undefined,
+    descripcion: undefined,
     razonSocial: undefined,
+    barrio: undefined,
     CUIT: undefined,
+    horario: undefined,
   });
 
-  const onChangeInput = (name, e) => {
-    console.log(e, name);
+  const handleInput = (e, name) => {
     setData({
       ...data,
       [name]: e.nativeEvent.text,
     });
   };
 
-  const registrar = () => {
-    // await postData(); que esta en context lol
-    navigation.reset({
-      index: 0,
-      routes: [{ name: "Login" }],
-    });
+  const registrar = async (data, is24, tipo) => {
+    const body = {
+      nombre_titular: data.nombre,
+      apellido_titular: data.apellido,
+      dni_titular: data.dni,
+      mail_interno: data.email,
+      telefono_interno: data.telefono,
+      razon_social: data.razonSocial,
+      cuit: data.CUIT,
+      nombre_tienda: data.nombreComercio,
+      direccion: data.direccion,
+      ciudad: data.ciudad,
+      cp: data.codPostal,
+      mail_publico: data.emailComercio,
+      telefono_publico: data.telefonoPublico,
+      descripcion: data.descripcion,
+      seguridad: securityChecked,
+      veinticuatrohs: is24,
+      tipo_locker: tipo,
+      precio: 654,
+      descuento: 20,
+      barrio: data.barrio,
+      fk_usuario: 1,
+      horario: dataTiming,
+    };
+
+    try {
+      console.log(data);
+      const res = await axios.post(
+        "https://lockit-backend.herokuapp.com/api/providers/createProvider",
+        body
+      );
+      if (res.status === 201) {
+        navigation.navigate("Login");
+      }
+    } catch (error) {
+      console.log(error);
+    }
     console.log(data);
   };
 
@@ -193,7 +236,6 @@ const RegisterProviderScreen = () => {
     setHorario({ apertura: "", cierre: "", day: "" });
   };
 
-
   const navigation = useNavigation();
 
   return (
@@ -209,28 +251,28 @@ const RegisterProviderScreen = () => {
             style={styles.textInput}
             placeholder="Nombre"
             name="nombre"
-            onChange={(e) => onChangeInput(e, "nombre")}
+            onChange={(e) => handleInput(e, "nombre")}
             placeholderTextColor="#adaaaa"
           />
           <TextInput
             style={styles.textInput}
             placeholder="Apellido"
             name="apellido"
-            onChange={(e) => onChangeInput(e, "apellido")}
+            onChange={(e) => handleInput(e, "apellido")}
             placeholderTextColor="#adaaaa"
           />
           <TextInput
             style={styles.textInput}
             placeholder="Email"
             name="email"
-            onChange={(e) => onChangeInput(e, "email")}
+            onChange={(e) => handleInput(e, "email")}
             placeholderTextColor="#adaaaa"
           />
           <TextInput
             style={styles.textInput}
             placeholder="DNI"
             name="dni"
-            onChange={(e) => onChangeInput(e, "dni")}
+            onChange={(e) => handleInput(e, "dni")}
             placeholderTextColor="#adaaaa"
           />
 
@@ -239,61 +281,94 @@ const RegisterProviderScreen = () => {
             style={styles.textInput}
             placeholder="Nombre del comercio"
             name="nombreComercio"
-            onChange={(e) => onChangeInput(e, "nombreComercio")}
+            onChange={(e) => handleInput(e, "nombreComercio")}
             placeholderTextColor="#adaaaa"
           />
+
+          <TextInput
+            style={styles.textInput}
+            placeholder="Mail interno"
+            name="email"
+            onChange={(e) => handleInput(e, "email")}
+            placeholderTextColor="#adaaaa"
+          />
+
           <TextInput
             style={styles.textInput}
             placeholder="Dirección"
             name="calle"
-            onChange={(e) => onChangeInput(e, "calle")}
+            onChange={(e) => handleInput(e, "calle")}
             placeholderTextColor="#adaaaa"
           />
-          <TextInput
-            style={styles.textInput}
-            placeholder="Altura"
-            name="altura"
-            onChange={(e) => onChangeInput(e, "altura")}
-            placeholderTextColor="#adaaaa"
-          />
+
           <TextInput
             style={styles.textInput}
             placeholder="Ciudad"
             name="ciudad"
-            onChange={(e) => onChangeInput(e, "ciudad")}
+            onChange={(e) => handleInput(e, "ciudad")}
             placeholderTextColor="#adaaaa"
           />
           <TextInput
             style={styles.textInput}
             placeholder="Código Postal"
             name="codPostal"
-            onChange={(e) => onChangeInput(e, "codPostal")}
+            onChange={(e) => handleInput(e, "codPostal")}
+            placeholderTextColor="#adaaaa"
+          />
+
+          <TextInput
+            style={styles.textInput}
+            placeholder="Barrio"
+            name="barrio"
+            onChange={(e) => handleInput(e, "barrio")}
             placeholderTextColor="#adaaaa"
           />
           <TextInput
             style={styles.textInput}
             placeholder="Email del comercio"
             name="emailComercio"
-            onChange={(e) => onChangeInput(e, "emailComercio")}
+            onChange={(e) => handleInput(e, "emailComercio")}
             placeholderTextColor="#adaaaa"
           />
           <TextInput
             style={styles.textInput}
             placeholder="Razón Social del comercio"
             name="razonSocial"
-            onChange={(e) => onChangeInput(e, "razonSocial")}
+            onChange={(e) => handleInput(e, "razonSocial")}
             placeholderTextColor="#adaaaa"
+          />
+
+          <PhoneInput
+            name="telefono"
+            onChange={(e) => handleInput(e, "telefono")}
+            style={styles.textInput}
+            textProps={{
+              placeholder: "Teléfono publico",
+              placeholderTextColor: "#adaaaa",
+            }}
+            flagStyle={{
+              width: 35,
+              height: 20,
+            }}
           />
           <TextInput
             style={styles.textInput}
             placeholder="CUIT"
             name="CUIT"
-            onChange={(e) => onChangeInput(e, "CUIT")}
+            onChange={(e) => handleInput(e, "CUIT")}
             placeholderTextColor="#adaaaa"
           />
 
-          <View style={{ marginTop: 15 }}>
-            <Text style={styles.text}>Elija sus lockers</Text>
+          <TextInput
+            style={styles.textInput}
+            placeholder="Descripción"
+            name="descripcion"
+            onChange={(e) => handleInput(e, "descripcion")}
+            placeholderTextColor="#adaaaa"
+          />
+
+          <View style={{ marginTop: 15, marginBottom: 22 }}>
+            <Text style={[styles.text, {marginLeft: 120}]}>Elija sus lockers</Text>
 
             <View
               style={{ flexDirection: "row", justifyContent: "space-evenly" }}
@@ -311,9 +386,34 @@ const RegisterProviderScreen = () => {
             </View>
           </View>
 
-          <View style={{ marginTop: 15 }}>
-            <Text style={styles.text}>Elija los dias que abre</Text>
+          <Text style={[styles.text, { marginTop: 20 }]}>Tenes seguridad?</Text>
+          <SelectDropdown
+            style={styles.selector}
+            data={security}
+            onSelect={(e) =>
+              e === "Si" ? setSecurityChecked(true) : setSecurityChecked(false)
+            }
+            buttonStyle={styles.selector}
+            buttonTextStyle={{ fontSize: 16 }}
+            dropdownStyle={{ borderRadius: 10 }}
+            name="seguridad"
+          />
 
+          <Text style={[styles.text, { marginTop: 38 }]}>Abris las 24 hs?</Text>
+          <SelectDropdown
+            style={styles.selector}
+            data={security}
+            buttonStyle={styles.selector}
+            buttonTextStyle={{ fontSize: 16 }}
+            dropdownStyle={{ borderRadius: 10 }}
+            onSelect={(e) => (e === "Si" ? setIs24(true) : setIs24(false))}
+            name="24"
+          />
+
+          <View style={{ marginTop: 15, alignSelf: "flex-start" }}>
+            <Text style={[styles.text, {marginRight: 35}]}>Elija los dias que abre</Text>
+
+            <View style={{marginLeft: 30}}>
             {dias.map((dia) => (
               <Checkbox2
                 dia={dia}
@@ -324,6 +424,7 @@ const RegisterProviderScreen = () => {
                 dataTiming={dataTiming}
               />
             ))}
+            </View>
           </View>
 
           {diasSeleccionados.map((dia) => {
@@ -341,34 +442,52 @@ const RegisterProviderScreen = () => {
                         flexDirection: "row",
                       }}
                     >
-                      <Icon name="cross" size={30} color="#DF4F1A" onPress={()=> setIsPicked(false)} />
+                      <Icon
+                        name="cross"
+                        size={30}
+                        color="#DF4F1A"
+                        onPress={() => setIsPicked(false)}
+                      />
                       <View style={{ alignItems: "center", marginLeft: 85 }}>
                         <Text style={styles.textNegro} key={name}>
                           {name}
                         </Text>
                       </View>
                     </View>
-                    <View style={{marginTop: 20, marginStart: 2, marginRight: 80}}>
-                   
-                   <View style={{flexDirection: "row", justifyContent: "space-between"}}>
-                    <Button
-                      title="Horario apertura"
-                      onPress={() => handleOpenAper(name)}
-                    />
-                    <View style={{marginLeft: 10}}>
-                    <Text style={styles.textModal}>{horario.apertura}</Text>
-                    </View>
-                    </View>
+                    <View
+                      style={{ marginTop: 20, marginStart: 2, marginRight: 80 }}
+                    >
+                      <View
+                        style={{
+                          flexDirection: "row",
+                          justifyContent: "space-between",
+                        }}
+                      >
+                        <Button
+                          title="Horario apertura"
+                          onPress={() => handleOpenAper(name)}
+                        />
+                        <View style={{ marginLeft: 10 }}>
+                          <Text style={styles.textModal}>
+                            {horario.apertura}
+                          </Text>
+                        </View>
+                      </View>
 
-                    <View style={{flexDirection: "row", justifyContent: "space-between"}}>
-                    <Button
-                      title="Horario cierre"
-                      onPress={() => handleOpenCierre(name)}
-                    />    
-                    <View style={{marginLeft: 35}}>
-                    <Text style={styles.textModal}>{horario.cierre}</Text>
-                    </View>
-                    </View>                
+                      <View
+                        style={{
+                          flexDirection: "row",
+                          justifyContent: "space-between",
+                        }}
+                      >
+                        <Button
+                          title="Horario cierre"
+                          onPress={() => handleOpenCierre(name)}
+                        />
+                        <View style={{ marginLeft: 35 }}>
+                          <Text style={styles.textModal}>{horario.cierre}</Text>
+                        </View>
+                      </View>
                     </View>
 
                     <TouchableOpacity
@@ -378,12 +497,12 @@ const RegisterProviderScreen = () => {
                       <Text style={styles.orangeText}>Confirmar</Text>
                     </TouchableOpacity>
 
-                   {/*<TouchableOpacity style={{ marginTop: 30 }}>
+                    {/*<TouchableOpacity style={{ marginTop: 30 }}>
                       <Text style={{ color: "#000000" }}>
                         Agregar Franja horaria
                       </Text>
                     </TouchableOpacity> */}
-                    
+
                     <DateTimePickerModal
                       isVisible={isAperPickerVisible}
                       mode="time"
@@ -404,9 +523,12 @@ const RegisterProviderScreen = () => {
             );
           })}
 
-          <TouchableOpacity style={styles.orangebutton} onPress={registrar}>
+          <TouchableOpacity
+            style={styles.orangebutton}
+            onPress={() => registrar(data, is24, tipo)}
+          >
             <View style={styles.centerText}>
-              <Text style={styles.text}>Registrarme</Text>
+              <Text style={styles.text2}>Registrarme</Text>
             </View>
           </TouchableOpacity>
 
@@ -441,14 +563,19 @@ export const styles = StyleSheet.create({
     backgroundColor: "#fff",
     marginTop: 8,
   },
+
   text: {
     color: "#ffffff",
-    alignItems: "center",
-    justifyContent: "center",
     fontSize: 20,
     marginBottom: 8,
-    marginTop: 10,
-    marginLeft: 10,
+    marginTop: 25,
+    alignSelf: "flex-start",
+    marginLeft: 32,
+  },
+  text2: {
+    color: "#ffffff",
+    fontSize: 20,
+    padding: 10,
   },
   textNegro: {
     color: "#000000",
@@ -507,5 +634,15 @@ export const styles = StyleSheet.create({
     marginBottom: 8,
     marginLeft: 10,
     marginTop: 6,
+  },
+  selector: {
+    borderWidth: 2,
+    padding: 5,
+    height: 50,
+    borderRadius: 8,
+    backgroundColor: "#fff",
+    marginTop: 8,
+    marginBottom: 8,
+    width: "85%",
   },
 });

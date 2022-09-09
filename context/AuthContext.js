@@ -1,8 +1,6 @@
-import react, { useState } from "react";
+import { react, useState } from "react";
 import { createContext } from "react";
-import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useNavigation } from "@react-navigation/native";
 
 export const AuthContext = createContext();
 
@@ -10,30 +8,61 @@ export const AuthProvider = ({ children }) => {
   const [isLogged, setIsLogged] = useState(false);
   const [userToken, setUserToken] = useState(null);
 
-  const registerUser = async (data, phone) => {
-    const body = {
-      nombre: data.nombre,
-      apellido: data.apellido,
-      mail: data.email,
-      contrasenia: data.contra,
-      telefono: phone,
-      fechaNac: null,
-      fkRol: data.user,
-      username: data.userName,
-    };
+  // states y handlers de RegisterScreen
 
-    console.log(body);
+  const [data, setData] = useState({
+    nombre: undefined,
+    apellido: undefined,
+    email: undefined,
+    contra: undefined,
+    userName: undefined,
+    user: undefined,
+  });
 
-    const res = await axios.post("https://lockit-backend.herokuapp.com/api/users/createuser", body)
-    .then(response => {
-      console.log('carlos',response);
-  })
-    .catch(error => console.log('pep',error.response.data));
-  }
+  const [phone, setPhone] = useState("");
+  const [userChecked, setUserChecked] = useState("");
+  const [dateVisible, setDateVisible] = useState(false);
+  const [date, setDate] = useState("");
 
+  const handleInput = (e, name) => {
+    setData({
+      ...data,
+      [name]: e.nativeEvent.text,
+    });
+  };
+
+  const handleUser = (e) => {
+    setUserChecked(e);
+    if (e !== "Proveedor" && e !== "Cliente") {
+      setData({
+        ...data,
+        user: undefined,
+      });
+    } else if (e === "Proveedor") {
+      setData({
+        ...data,
+        user: 1,
+      });
+    } else if (e === "Cliente") {
+      setData({
+        ...data,
+        user: 2,
+      });
+    }
+    console.log(data.user);
+  };
+
+  const handleDate = (date) => {
+    setDateVisible(false);
+    setDate(date);
+  };
 
   return (
-    <AuthContext.Provider value={{ registerUser }}>
+    <AuthContext.Provider
+      value={{ /*RegisterScreen */handleInput, setPhone, setDateVisible, handleDate, handleUser, data, date, dateVisible 
+      /*RegisterProviderScreen*/ 
+     }}
+    >
       {children}
     </AuthContext.Provider>
   );

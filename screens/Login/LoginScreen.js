@@ -1,23 +1,38 @@
 import { View, Text, StyleSheet, Image, TextInput, TouchableOpacity } from "react-native";
 import React from "react";
 import { useNavigation } from "@react-navigation/native";
-
+import { useState } from "react";
+import axios from "axios";
+import { useContext } from "react";
+import PasswordInputText from 'react-native-hide-show-password-input';
 
 const LoginScreen = () => {
 
   const navigation = useNavigation();
+
+  const [loginData, setLoginData] = useState({
+    username: undefined,
+    contrasenia: undefined,
+  });
+
+  const handleInput = (e, name) => {
+    setLoginData({
+      ...loginData,
+      [name]: e.nativeEvent.text,
+    });
+    console.log(loginData);
+  }
+
   
-  const logIn = async () => {
-    try {
-      // await Login(); que esta en context lol
-      
-    } catch (error) {
-      console.log(error);
-    }
-    navigation.reset({
-        index: 0,
-        routes: [{ name: "Nav" }],
-      });
+  const logIn = async (loginData) => {
+    const res = await axios.post("https://lockit-backend.herokuapp.com/api/users/login", loginData)
+    .then(response => {
+      console.log('carlos',response.data.token);
+      if (response.status === 200) {
+
+        navigation.navigate("CliNav");
+      }
+    }).catch(error => console.log(error.response));
   };
 
   return (
@@ -30,21 +45,25 @@ const LoginScreen = () => {
       <TextInput
         style={styles.textInput}
         placeholder="Usuario"
-        name="contra"
+        name="username"
         placeholderTextColor="#adaaaa"
+        onChange={(e) => handleInput(e, "username")}
       />
 
       <TextInput
         style={styles.textInput}
         placeholder="Contraseña"
-        name="contra"
+        secureTextEntry={true}
+        name="contrasenia"
         placeholderTextColor="#adaaaa"
+        onChange={(e) => handleInput(e, "contrasenia")}
       />
+
 
       <TouchableOpacity
         style={styles.orangebutton}
         onPress={async () => {
-          await logIn();
+          await logIn(loginData);
         }
         }
       >

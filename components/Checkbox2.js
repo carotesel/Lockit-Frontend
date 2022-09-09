@@ -47,5 +47,6 @@ const styles = StyleSheet.create({
   text: {
     textDecorationLine: "none",
     color: "white",
+    fontSize: 20,
   },
 });

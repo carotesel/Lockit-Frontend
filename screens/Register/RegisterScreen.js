@@ -8,72 +8,24 @@ import {
 } from "react-native";
 import React from "react";
 import { useNavigation } from "@react-navigation/native";
-import { useState } from "react";
 import PhoneInput from "react-native-phone-input";
-import BouncyCheckbox from "react-native-bouncy-checkbox";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
-import SelectDropdown from 'react-native-select-dropdown'
-
+import SelectDropdown from "react-native-select-dropdown";
 
 const RegisterScreen = () => {
-  const navigation = useNavigation();
   const users = ["Proveedor", "Cliente"];
-  const {registerUser} = useContext(AuthContext);
-
-  const [data, setData] = useState({
-    nombre: undefined,
-    apellido: undefined,
-    email: undefined,
-    contra: undefined,
-    userName: undefined,
-    user: undefined,
-  });
+  const navigation = useNavigation();
 
   console.log(data);
-
-  const [phone, setPhone] = useState("");
-  const [userChecked, setUserChecked] = useState("");
-  const [dateVisible, setDateVisible] = useState(false);
-  const [date, setDate] = useState("");
-
   console.log(date);
 
-  const handleInput = (e, name) => {
-    setData({
-      ...data,
-      [name]: e.nativeEvent.text,
-    });
+  const register = () => {
+    navigation.navigate("Rprovider");
   };
 
-
-  const handleUser = (e) => {
-    setUserChecked(e);
-    if (e !== "Proveedor" && e !== "Cliente") {
-      setData({
-        ...data,
-        user: undefined,
-      });
-    } else if (e === "Proveedor") {
-      setData({
-        ...data,
-        user: 1,
-      });
-    } else if (e === "Cliente") {
-      setData({
-        ...data,
-        user: 2,
-      });
-    }
-    console.log(data.user);
-  };
-
-  const handleDate = (date) => {
-    setDateVisible(false);
-    setDate(date);
-  }
-  
+  const {handleInput, setPhone, setDateVisible, handleDate, handleUser, data, date, dateVisible} = useContext(AuthContext);
 
   return (
     <View style={styles.container}>
@@ -138,8 +90,9 @@ const RegisterScreen = () => {
 
       <TouchableOpacity
         style={styles.textInput}
-       onPress={() => setDateVisible(true)} >
-      <Text style={styles.grayText}>Fecha de Nacimiento</Text>
+        onPress={() => setDateVisible(true)}
+      >
+        <Text style={styles.grayText}>Fecha de Nacimiento</Text>
       </TouchableOpacity>
 
       <DateTimePickerModal
@@ -149,20 +102,20 @@ const RegisterScreen = () => {
         onCancel={() => setDateVisible(false)}
       />
 
-        <SelectDropdown 
-          style={styles.selector}
-          data={users}
-          onSelect={(e) => handleUser(e)}
-          defaultButtonText="Seleccione una opción"
-          buttonStyle={styles.selector}
-          buttonTextStyle={{fontSize: 16}}
-          dropdownStyle={{borderRadius: 10}}
-          
-        />
+      <SelectDropdown
+        style={styles.selector}
+        data={users}
+        onSelect={(e) => handleUser(e)}
+        defaultButtonText="Seleccione una opción"
+        buttonStyle={styles.selector}
+        buttonTextStyle={{ fontSize: 16 }}
+        dropdownStyle={{ borderRadius: 10 }}
+      />
 
       <TouchableOpacity
         style={styles.orangebutton}
-        onPress={async() => await registerUser(data, phone)}>
+        onPress={ () => register()}
+      >
         <View style={styles.centerText}>
           <Text style={styles.text}>Registrarme</Text>
         </View>
