@@ -5,10 +5,8 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [isLogged, setIsLogged] = useState(false);
-  const [userToken, setUserToken] = useState(null);
-
-  // states y handlers de RegisterScreen
+ 
+  // states y handlers de RegisterUser
 
   const [data, setData] = useState({
     nombre: undefined,
@@ -57,10 +55,16 @@ export const AuthProvider = ({ children }) => {
     setDate(date);
   };
 
+  // states y handlers de LoginScreen
+  const [isLogged, setIsLogged] = useState(false);
+  const [userToken, setUserToken] = useState(null);
+  const [userData, setUserData] = useState(null); // datos del user YA LOGUEADO!
+
   return (
     <AuthContext.Provider
       value={{ /*RegisterScreen */handleInput, setPhone, setDateVisible, handleDate, handleUser, data, date, dateVisible 
       /*RegisterProviderScreen*/ 
+      /*LoginScreen*/
      }}
     >
       {children}

@@ -7,7 +7,7 @@ const SearchCard = ({ local, barrio, lockersDisponibles, is24 }) => {
   return (
     <View style={styles.container}>
       <View style={styles.imageContainer}>
-      <Icon3 name="storefront-outline" size={48} color={'#fffff'} style={{marginTop: 8, alignSelf: 'center'}} />
+      <Icon3 name="storefront-outline" size={48} color={'black'} style={{marginTop: 8, alignSelf: 'center'}} />
       </View>
       <View style={styles.textContainer}>
         <View style={{ flexDirection: "row", marginRight: 60, marginStart: 5 }}>

@@ -1,13 +1,20 @@
-import { View, Text, StyleSheet, Image, TextInput, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  TextInput,
+  TouchableOpacity,
+} from "react-native";
 import React from "react";
 import { useNavigation } from "@react-navigation/native";
 import { useState } from "react";
 import axios from "axios";
 import { useContext } from "react";
-import PasswordInputText from 'react-native-hide-show-password-input';
+import { Login } from "../../services/LoginService";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const LoginScreen = () => {
-
   const navigation = useNavigation();
 
   const [loginData, setLoginData] = useState({
@@ -21,18 +28,13 @@ const LoginScreen = () => {
       [name]: e.nativeEvent.text,
     });
     console.log(loginData);
-  }
+  };
 
-  
-  const logIn = async (loginData) => {
-    const res = await axios.post("https://lockit-backend.herokuapp.com/api/users/login", loginData)
-    .then(response => {
-      console.log('carlos',response.data.token);
-      if (response.status === 200) {
+  const handleLogin = async () => {
+    await Login(loginData, navigation);
 
-        navigation.navigate("CliNav");
-      }
-    }).catch(error => console.log(error.response));
+    const token = await AsyncStorage.getItem("token");
+    // hacer un get a /api/users/me con el token y guardar el usuario en el context
   };
 
   return (
@@ -59,34 +61,49 @@ const LoginScreen = () => {
         onChange={(e) => handleInput(e, "contrasenia")}
       />
 
-
       <TouchableOpacity
         style={styles.orangebutton}
-        onPress={async () => {
-          await logIn(loginData);
-        }
-        }
+        onPress={() => handleLogin()}
       >
         <View style={styles.centerText}>
           <Text style={styles.text}>Iniciar Sesión</Text>
         </View>
       </TouchableOpacity>
 
-      <Text style={{color:"#ffff", marginTop: 40}}>O también podes usar:</Text>
+      <Text style={{ color: "#ffff", marginTop: 40 }}>
+        O también podes usar:
+      </Text>
 
-      <View style={{flexDirection:"row", marginTop: 30, justifyContent:"space-around" }}>
-        <Image source={require ('../../assets/images/media/google.png')}/>
-        <Image source={require ('../../assets/images/media/facebook.png')} style={{marginLeft: 35}}/>
-        <Image source={require ('../../assets/images/media/twitter.png')} style={{marginLeft: 35}}/>
+      <View
+        style={{
+          flexDirection: "row",
+          marginTop: 30,
+          justifyContent: "space-around",
+        }}
+      >
+        <Image source={require("../../assets/images/media/google.png")} />
+        <Image
+          source={require("../../assets/images/media/facebook.png")}
+          style={{ marginLeft: 35 }}
+        />
+        <Image
+          source={require("../../assets/images/media/twitter.png")}
+          style={{ marginLeft: 35 }}
+        />
       </View>
 
-      <View style={{flexDirection:"row", marginTop: 30, justifyContent:"space-around" }}>
-      <Text style={styles.text}>No te registraste aun? </Text>
-      <TouchableOpacity onPress={() => navigation.navigate("Rscreen")}>
-        <Text style={styles.orangeText}>Registrate</Text>
-      </TouchableOpacity>
+      <View
+        style={{
+          flexDirection: "row",
+          marginTop: 30,
+          justifyContent: "space-around",
+        }}
+      >
+        <Text style={styles.text}>No te registraste aun? </Text>
+        <TouchableOpacity onPress={() => navigation.navigate("Rscreen")}>
+          <Text style={styles.orangeText}>Registrate</Text>
+        </TouchableOpacity>
       </View>
-
     </View>
   );
 };
@@ -136,5 +153,4 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     fontSize: 18,
   },
-
 });
