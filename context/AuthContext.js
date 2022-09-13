@@ -21,6 +21,11 @@ export const AuthProvider = ({ children }) => {
   const [userChecked, setUserChecked] = useState("");
   const [dateVisible, setDateVisible] = useState(false);
   const [date, setDate] = useState("");
+  const [infoUser, setInfoUser] = useState(null);
+
+
+  // states y handlers de LoginScreen
+
 
   const handleInput = (e, name) => {
     setData({
@@ -55,16 +60,12 @@ export const AuthProvider = ({ children }) => {
     setDate(date);
   };
 
-  // states y handlers de LoginScreen
-  const [isLogged, setIsLogged] = useState(false);
-  const [userToken, setUserToken] = useState(null);
-  const [userData, setUserData] = useState(null); // datos del user YA LOGUEADO!
-
+  
   return (
     <AuthContext.Provider
-      value={{ /*RegisterScreen */handleInput, setPhone, setDateVisible, handleDate, handleUser, data, date, dateVisible 
+      value={{ /*RegisterScreen */handleInput, setPhone, setDateVisible, handleDate, handleUser, data, date, dateVisible, 
       /*RegisterProviderScreen*/ 
-      /*LoginScreen*/
+      /*LoginScreen*/infoUser, setInfoUser
      }}
     >
       {children}

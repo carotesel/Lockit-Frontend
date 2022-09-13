@@ -13,9 +13,12 @@ import axios from "axios";
 import { useContext } from "react";
 import { Login } from "../../services/LoginService";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { AuthContext } from "../../context/AuthContext";
 
 const LoginScreen = () => {
   const navigation = useNavigation();
+
+  const {infoUser, setInfoUser} = useContext(AuthContext);
 
   const [loginData, setLoginData] = useState({
     username: undefined,
@@ -34,8 +37,34 @@ const LoginScreen = () => {
     await Login(loginData, navigation);
 
     const token = await AsyncStorage.getItem("token");
-    // hacer un get a /api/users/me con el token y guardar el usuario en el context
+
+    console.log(token);
+
+    const user = await axios({
+      method: "POST",
+      url: "https://lockit-backend.herokuapp.com/api/users/me",
+      data: {token: token},
+      })
+      .then((res) => {
+        let user = res.data;
+        console.log(user);
+        setInfoUser(user);
+        
+        if (res.data.fkrol === 2) {
+          navigation.navigate("CliNav");
+        }
+        else if (res.data.fkrol === 1) {
+          navigation.navigate("Nav");
+        }
+
+      })
+
+      .catch((err) => {
+        console.log(err);
+      });
   };
+
+  // hacer un get a /api/users/me con el token y guardar el usuario en el context
 
   return (
     <View style={styles.container}>

@@ -2,6 +2,7 @@ import { View, Text, StyleSheet, TextInput, ScrollView, StatusBar } from "react-
 import React from "react";
 import SearchCard from "../../components/SearchCard";
 import Icon from "react-native-vector-icons/Ionicons";
+import { useNavigation } from "@react-navigation/native";
 
 const CliBusquedaScreen = () => {
   const tiendas = [
@@ -63,6 +64,8 @@ const CliBusquedaScreen = () => {
     },
   ];
 
+  const navigation = useNavigation();
+
   return (
     <View style={styles.container}>
       <StatusBar barStyle="dark-content" />
@@ -77,14 +80,15 @@ const CliBusquedaScreen = () => {
       </View>
       <ScrollView>
       {tiendas.map((tienda) => (
-        <View style={styles.card} key={tienda.id}
-        >
-          <SearchCard
-            local={tienda.local}
-            barrio={tienda.barrio}
-            is24={tienda.is24}
-          />
-        </View>
+        tienda.lockersDisponibles > 0 ?
+          <View style={styles.card} key={tienda.id}
+          >
+            <SearchCard
+              tienda={tienda}
+              navigation={navigation}
+            />
+          </View>
+          : undefined
       ))}
       </ScrollView>
     </View>
@@ -119,8 +123,8 @@ const styles = StyleSheet.create({
   },
   card: {
     flex: 1,
-    marginBottom: 10,
     marginTop: 10,
+    marginBottom: 15,
     // backgroundColor: "#ff0f",
   },
   searchIcon: {

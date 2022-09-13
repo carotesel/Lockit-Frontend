@@ -1,36 +1,40 @@
-import { View, Text, Image, StyleSheet } from "react-native";
+import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 import React from "react";
 import Icon3 from 'react-native-vector-icons/MaterialCommunityIcons';
 
 
-const SearchCard = ({ local, barrio, lockersDisponibles, is24 }) => {
+const SearchCard = ({ tienda, navigation }) => {
   return (
+    <TouchableOpacity onPress={()=> navigation.navigate("Detalle", 
+    {tienda: tienda})}>
     <View style={styles.container}>
       <View style={styles.imageContainer}>
       <Icon3 name="storefront-outline" size={48} color={'black'} style={{marginTop: 8, alignSelf: 'center'}} />
       </View>
       <View style={styles.textContainer}>
         <View style={{ flexDirection: "row", marginRight: 60, marginStart: 5 }}>
-          <Text style={{ fontWeight: "bold", fontSize: 19 }}>{local}</Text>
+          <Text style={{ fontWeight: "bold", fontSize: 19 }}>{tienda.local}</Text>
         </View>
-        {lockersDisponibles > 0 ? (
-            <Text style={{marginStart: 5, marginTop: 5, marginBottom: 5, color: "green", fontWeight: "bold", fontSize:17 }}>Disponible</Text>
-        ) : (
-            undefined
-        )}
         <Text style={{marginStart: 5, marginTop: 8, marginBottom: 8}}>Dirección:</Text>
-        {is24 ? <Text style={{marginStart: 5, fontWeight: 'bold'}}>24hs</Text> : undefined}
+        {tienda.is24 ? <Text style={{marginStart: 5, fontWeight: 'bold'}}>24hs</Text> : undefined}
       </View>
     </View>
+    </TouchableOpacity>
   );
 };
 
-export default SearchCard;
+/*id: 4,
+      local: "Las antos",
+      barrio: "Belgrano",
+      lockersDisponibles: 10,
+      is24: false,**/
+
+export default SearchCard; 
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    height: 80,
+    height: 90,
     marginLeft: 20,
   },
   imageBorder: {

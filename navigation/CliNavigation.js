@@ -9,13 +9,16 @@ import ProfileScreen from "../screens/ProfileScreen";
 import CliBusquedaScreen from "../screens/Client/CliBusquedaScreen"; 
 import CliLockersScreen from "../screens/Client/CliLockersScreen";
 
+// stacks 
+import ReservaStackScreen from "../stacks/Client/ReservaStackScreen";
+
 
 const CliNavigation = () => {
   const Tab = createBottomTabNavigator();
 
   return (
     <Tab.Navigator
-      initialRouteName="Money"
+      initialRouteName="Search"
       screenOptions={{
         tabBarActiveTintColor: "#DF4F1A",
         headerShown: false,
@@ -24,7 +27,7 @@ const CliNavigation = () => {
     >
       <Tab.Screen
         name="Search"
-        component={CliBusquedaScreen}
+        component={ReservaStackScreen}
         options={{
           headerShown: false,
           gestureEnabled: false,
