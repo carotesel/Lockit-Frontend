@@ -7,13 +7,19 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const ProfileScreen = () => {
   const { infoUser, setInfoUser } = useContext(AuthContext);
+  const { loginData, setLoginData } = useContext(AuthContext);
   const navigation = useNavigation();
 
   const handleLogout = async () => {
+    setLoginData({
+      username: undefined,
+      contrasenia: undefined,
+    });
     await AsyncStorage.removeItem("token");
     setInfoUser("");
+
     navigation.navigate("Login");
-    };
+  };
 
   return (
     <View>
@@ -62,8 +68,7 @@ const ProfileScreen = () => {
           marginBottom: 8,
           alignSelf: "center",
         }}
-        
-        onPress={()=> handleLogout()}
+        onPress={() => handleLogout()}
       >
         <View style={{ alignItems: "center" }}>
           <Text style={{ color: "white", fontSize: 18 }}>Cerrar sesión</Text>

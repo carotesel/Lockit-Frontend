@@ -14,16 +14,22 @@ import { useContext } from "react";
 import { Login } from "../../services/LoginService";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { AuthContext } from "../../context/AuthContext";
+import { useEffect } from "react";
 
 const LoginScreen = () => {
+
+  useEffect(() => {
+    setLoginData({
+      username: undefined,
+      contrasenia: undefined,
+    })
+  },[])
+
   const navigation = useNavigation();
 
   const {infoUser, setInfoUser} = useContext(AuthContext);
+  const {loginData, setLoginData} = useContext(AuthContext);
 
-  const [loginData, setLoginData] = useState({
-    username: undefined,
-    contrasenia: undefined,
-  });
 
   const handleInput = (e, name) => {
     setLoginData({
@@ -50,14 +56,6 @@ const LoginScreen = () => {
         console.log(user);
         setInfoUser(user);
 
-        setLoginData({
-          username: undefined,
-          contrasenia: undefined,
-        });
-
-        console.log('pepe', loginData);
-
-        
         if (res.data.fkrol === 2) {
           navigation.navigate("CliNav");
         }
@@ -72,7 +70,7 @@ const LoginScreen = () => {
       });
   };
 
-  // hacer un get a /api/users/me con el token y guardar el usuario en el context
+  // hacer un get a /api/users/me con el token y guardar   usuario en el context
 
   return (
     <View style={styles.container}>
@@ -84,6 +82,7 @@ const LoginScreen = () => {
       <TextInput
         style={styles.textInput}
         placeholder="Usuario"
+        value={loginData.username}
         name="username"
         placeholderTextColor="#adaaaa"
         onChange={(e) => handleInput(e, "username")}
@@ -92,6 +91,7 @@ const LoginScreen = () => {
       <TextInput
         style={styles.textInput}
         placeholder="Contraseña"
+        value={loginData.contrasenia}
         secureTextEntry={true}
         name="contrasenia"
         placeholderTextColor="#adaaaa"

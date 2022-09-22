@@ -26,6 +26,10 @@ export const AuthProvider = ({ children }) => {
 
   // states y handlers de LoginScreen
 
+  const [loginData, setLoginData] = useState({
+    username: undefined,
+    contrasenia: undefined,
+  });
 
   const handleInput = (e, name) => {
     setData({
@@ -65,8 +69,7 @@ export const AuthProvider = ({ children }) => {
     <AuthContext.Provider
       value={{ /*RegisterScreen */handleInput, setPhone, setDateVisible, handleDate, handleUser, data, date, dateVisible, 
       /*RegisterProviderScreen*/ 
-      /*LoginScreen*/infoUser, setInfoUser
-     }}
+      /*LoginScreen*/infoUser, setInfoUser, loginData, setLoginData  }}
     >
       {children}
     </AuthContext.Provider>

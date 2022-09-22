@@ -1,14 +1,16 @@
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import React from 'react'
 import ConfirmCard from '../../components/ConfirmCard'
+import { useNavigation } from '@react-navigation/native'
 
 const CliConfirmadoScreen = () => {
+  const navigation = useNavigation()
   return (
     <View style={styles.container}>
       <Text style={styles.bigText}>Tu reserva</Text>
       <ConfirmCard/>
 
-      <TouchableOpacity style={styles.orangebutton}>
+      <TouchableOpacity style={styles.orangebutton} onPress={() => navigation.navigate("Lockers")}>
         <View style={styles.centerText}>
           <Text style={[styles.text2, { color: "white" }]}>Ver detalle de reserva</Text>
         </View>

@@ -6,16 +6,23 @@ import { useRoute } from "@react-navigation/native";
 import { getAvailableTypeLockers } from "../../services/ClientService";
 import { useNavigation } from "@react-navigation/native";
 import { useEffect } from "react";
+import { reservarLocker } from "../../services/ClientService";
+import { useContext } from "react";
+import { AuthContext } from "../../context/AuthContext";
 
 const CliReservaScreen = () => {
   
   const [size, setSize] = useState(null);
   const [hours, setHours] = useState(null);
 
+  console.log("aber", size, hours);
+
   const route = useRoute();
   const { tienda } = route.params;
 
   const navigation = useNavigation();
+
+  const { infoUser } = useContext(AuthContext);
 
   console.log('====================================');
   console.log(tienda.idTienda);
@@ -31,9 +38,8 @@ const CliReservaScreen = () => {
 
 
   const handleReserva = async () => {
-   // const reserva = await reservarTienda(tienda.idTienda);
-    //console.log('juancito', reserva);
-    navigation.navigate("Confirmado");
+    const codigo = await reservarLocker(tienda.idTienda, size, infoUser.idUsuarios, hours, navigation);
+    console.log(codigo);
   }
   return (
     <View style={styles.container}>
@@ -42,9 +48,10 @@ const CliReservaScreen = () => {
       <Text style={styles.text}>Tamaño del locker</Text>
       <SelectDropdown
         data={["Chico - 40x70x60cm", "Mediano - 50x75x65cm", "Grande - 60x80x70cm"]}
-        onSelect={(index) => {
-          setSize(index);
-          console.log(index);
+        onSelect={(selectedItem, index) => {
+         console.log("juan tamanio", index); 
+         setSize(index);
+          
         }}
         defaultButtonText="Seleccionar tamaño"
         buttonStyle={styles.input2}
