@@ -18,14 +18,23 @@ const RegisterScreen = () => {
   const users = ["Proveedor", "Cliente"];
   const navigation = useNavigation();
 
-  console.log(data);
-  console.log(date);
-
   const register = () => {
     navigation.navigate("Rprovider");
   };
 
-  const {handleInput, setPhone, setDateVisible, handleDate, handleUser, data, date, dateVisible} = useContext(AuthContext);
+  const {
+    handleInput,
+    setPhone,
+    setDateVisible,
+    handleDate,
+    handleUser,
+    data,
+    date,
+    dateVisible,
+  } = useContext(AuthContext);
+  
+  console.log(data);
+  console.log(date);
 
   return (
     <View style={styles.container}>
@@ -106,16 +115,13 @@ const RegisterScreen = () => {
         style={styles.selector}
         data={users}
         onSelect={(e) => handleUser(e)}
-        defaultButtonText="Seleccione una opción"
+        defaultButtonText="Seleccione el tipo de usuario"
         buttonStyle={styles.selector}
         buttonTextStyle={{ fontSize: 16 }}
         dropdownStyle={{ borderRadius: 10 }}
       />
 
-      <TouchableOpacity
-        style={styles.orangebutton}
-        onPress={ () => register()}
-      >
+      <TouchableOpacity style={styles.orangebutton} onPress={() => register()}>
         <View style={styles.centerText}>
           <Text style={styles.text}>Registrarme</Text>
         </View>

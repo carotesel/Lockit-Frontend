@@ -49,6 +49,14 @@ const LoginScreen = () => {
         let user = res.data;
         console.log(user);
         setInfoUser(user);
+
+        setLoginData({
+          username: undefined,
+          contrasenia: undefined,
+        });
+
+        console.log('pepe', loginData);
+
         
         if (res.data.fkrol === 2) {
           navigation.navigate("CliNav");

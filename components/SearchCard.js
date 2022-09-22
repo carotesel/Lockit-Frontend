@@ -1,22 +1,21 @@
 import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 import React from "react";
-import Icon3 from 'react-native-vector-icons/MaterialCommunityIcons';
+import Icon3 from 'react-native-vector-icons/MaterialIcons';
 
 
 const SearchCard = ({ tienda, navigation }) => {
   return (
-    <TouchableOpacity onPress={()=> navigation.navigate("Detalle", 
-    {tienda: tienda})}>
+    <TouchableOpacity onPress={()=> navigation.navigate("Detalle", {tienda: tienda})}>
     <View style={styles.container}>
       <View style={styles.imageContainer}>
-      <Icon3 name="storefront-outline" size={48} color={'black'} style={{marginTop: 8, alignSelf: 'center'}} />
+      <Icon3 name="store-mall-directory" size={48} color={'black'} style={{marginTop: 8, alignSelf: 'center'}} />
       </View>
       <View style={styles.textContainer}>
         <View style={{ flexDirection: "row", marginRight: 60, marginStart: 5 }}>
-          <Text style={{ fontWeight: "bold", fontSize: 19 }}>{tienda.local}</Text>
+          <Text style={{ fontSize: 20 }}>{tienda.nombre_tienda}</Text>
         </View>
-        <Text style={{marginStart: 5, marginTop: 8, marginBottom: 8}}>Dirección:</Text>
-        {tienda.is24 ? <Text style={{marginStart: 5, fontWeight: 'bold'}}>24hs</Text> : undefined}
+        <Text style={{marginStart: 5, marginTop: 8, marginBottom: 8, fontSize: 16}}>{tienda.direccion}</Text>
+        {tienda.veinticuatrohs ? <Text style={{marginStart: 5, fontWeight: 'bold', fontSize: 16, color: 'green'}}>24hs</Text> : undefined}
       </View>
     </View>
     </TouchableOpacity>
@@ -36,6 +35,8 @@ const styles = StyleSheet.create({
     flex: 1,
     height: 90,
     marginLeft: 20,
+    paddingTop: 10,
+    paddingBottom: 15,
   },
   imageBorder: {
     marginTop: 6,

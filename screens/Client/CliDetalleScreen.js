@@ -1,7 +1,21 @@
-import { View, Text, StyleSheet, Image } from "react-native";
+import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import React from "react";
+import { useRoute } from "@react-navigation/native";
+import Icon from "react-native-vector-icons/Ionicons";
+import Icon2 from "react-native-vector-icons/Foundation";
+import { useNavigation } from "@react-navigation/native";
+import { useEffect } from "react";
 
-const CliDetalleScreen = ({ tienda }) => {
+const CliDetalleScreen = () => {
+  const route = useRoute();
+  const { tienda } = route.params;
+
+  console.log('====================================');
+  console.log(tienda);
+  console.log('====================================');
+
+  const navigation = useNavigation();
+
   return (
     <View style={styles.container}>
       <View style={styles.textContainer}>
@@ -12,26 +26,72 @@ const CliDetalleScreen = ({ tienda }) => {
           />
         </View>
 
-        <Text style={styles.bigText}>Nombre</Text>
+        <Text style={styles.bigText}>{tienda.nombre_tienda}</Text>
 
-        <View style={styles.row}>
-          <Text style={styles.text}>24 hs -</Text>
-          <Text style={[styles.text, { marginLeft: 10 }]}>Dirección</Text>
+        <View>
+          <Text style={[styles.text, { marginTop: 8 }]}>
+            <Icon name="location-outline" size={30} /> {tienda.direccion}
+          </Text>
+
+          {tienda.veinticuatrohs ? (
+            <Text
+              style={[
+                styles.text,
+                {
+                  color: "green",
+                  fontWeight: "bold",
+                  marginTop: 18,
+                  marginBottom: 2,
+                  alignSelf: "center",
+                },
+              ]}
+            >
+              Abierto las 24Hs
+            </Text>
+          ) : undefined}
+          <View style={[styles.row, {marginTop: -18, alignSelf: "center"}]}>
+            <Image
+              source={require("../../assets/icons/Star.png")}
+              style={styles.star}
+            />
+            <Image
+              source={require("../../assets/icons/Star.png")}
+              style={styles.star}
+            />
+            <Image
+              source={require("../../assets/icons/Star.png")}
+              style={styles.star}
+            />
+            <Image
+              source={require("../../assets/icons/Star.png")}
+              style={styles.star}
+            />
+          </View>
         </View>
+
+        
       </View>
-      <Text style={[styles.text, {marginTop: 30, marginLeft: 20}]}>Descripcion:</Text>
 
-    <View style={styles.row}>   
-      <Text style={[styles.text, {marginTop: 30, marginLeft: 20}]}>Calificacion:</Text>
-      <Image source={require("../../assets/icons/Star.png")} style={styles.star}/>
-      <Image source={require("../../assets/icons/Star.png")} style={styles.star}/>
-      <Image source={require("../../assets/icons/Star.png")} style={styles.star}/>
-      <Image source={require("../../assets/icons/Star.png")} style={styles.star}/>
+      <View style={{ flexDirection: "row", marginTop: 30, marginLeft: 15, backgroundColor:"white", width: 170, padding: 10, borderRadius:10, paddingTop:2, shadowColor: "#fffff" }}>
+        <Icon2 name="telephone" size={28} style={{ marginTop: 12 }} />
+        <Text style={[styles.text, { marginLeft: 7, marginTop: 15 }]}>
+          {tienda.telefono_publico.trim()}
+        </Text>
+      </View>
 
-    </View>
+      <Text style={[styles.text, { marginTop: 30, marginLeft: 20 }]}>
+        {tienda.descripcion}
+      </Text>
+
+      <TouchableOpacity style={styles.orangebutton} onPress={()=> navigation.navigate("Reserva", {tienda: tienda})}>
+        <View style={styles.centerText}>
+          <Text style={[styles.text, { color: "white" }]}>Reservar locker</Text>
+        </View>
+      </TouchableOpacity>
     </View>
   );
 };
+
 
 // {[styles.text, {marginLeft: 120}]
 
@@ -42,15 +102,14 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   bigText: {
-    fontSize: 30,
+    fontSize: 33,
     fontWeight: "bold",
     marginTop: 10,
-    marginLeft: 10,
   },
   text: {
     fontSize: 20,
     marginTop: 5,
-    marginLeft: 10,
+    marginLeft: 14,
   },
   row: {
     flexDirection: "row",
@@ -62,8 +121,7 @@ const styles = StyleSheet.create({
     borderColor: "#000",
     width: 85,
     height: 85,
-    marginTop: 10,
-    marginLeft: 10,
+    marginTop: 5,
   },
   image: {
     marginTop: -2,
@@ -77,14 +135,25 @@ const styles = StyleSheet.create({
   },
   textContainer: {
     backgroundColor: "#fff",
-    padding: 10,
     paddingBottom: 20,
-    paddingTop: 20,
+    alignItems: "center",
   },
-    star: {
-    width: 28,
-    height: 28,
+  star: {
+    width: 22,
+    height: 22,
     marginTop: 28,
-    marginLeft: 10,
-    },
+    marginLeft: 20,
+  },
+  centerText: {
+    alignItems: "center",
+  },
+  orangebutton: {
+    backgroundColor: "#DF4F1A",
+    padding: 15,
+    width: "65%",
+    borderRadius: 8,
+    marginTop: 200,
+    marginBottom: 8,
+    alignSelf: "center",
+  },
 });
