@@ -12,65 +12,7 @@ const CliBusquedaScreen = () => {
   const [tiendas, setTiendas] = useState([]);
   console.log(barrio);
 
-  /*const tiendas = [
-    {
-      id: 1,
-      local: "Las pepas",
-      barrio: "Almagro",
-      lockersDisponibles: 10,
-      is24: true,
-    },
-    {
-      id: 2,
-      local: "Las caros",
-      barrio: "Caballito",
-      lockersDisponibles: 10,
-      is24: false,
-    },
-    {
-      id: 3,
-      local: "Las renus",
-      barrio: "Villa Crespo",
-      lockersDisponibles: 10,
-      is24: true,
-    },
-    {
-      id: 4,
-      local: "Las antos",
-      barrio: "Belgrano",
-      lockersDisponibles: 10,
-      is24: false,
-    },
-    {
-      id: 5,
-      local: "Las juan",
-      barrio: "Villa maria",
-      lockersDisponibles: 10,
-      is24: true,
-    },
-    {
-      id: 6,
-      local: "Las jaco",
-      barrio: "Paternal",
-      lockersDisponibles: 10,
-      is24: false,
-    },
-    {
-      id: 7,
-      local: "Las albert",
-      barrio: "Villa Urquiza",
-      lockersDisponibles: 10,
-      is24: true,
-    },
-    {
-      id: 8,
-      local: "Las pepe",
-      barrio: "Chacarita",
-      lockersDisponibles: 10,
-      is24: false,
-    },
-  ]; */
-
+  
   const handleSearch = async (barrio) => {
     const stores = await getTiendas(barrio);
     setTiendas(stores);

@@ -1,5 +1,5 @@
-import { text } from "@fortawesome/fontawesome-svg-core";
-import React from "react";
+import React, { useContext } from "react";
+import { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -10,38 +10,33 @@ import {
   StatusBar,
   TextInput,
 } from "react-native";
-import { FlatList } from "react-native-gesture-handler";
 
-import { FlatGrid } from "react-native-super-grid";
-import { styleProps } from "react-native-web/dist/cjs/modules/forwardedProps";
+import { AuthContext } from "../../context/AuthContext";
+import { getStore } from "../../services/AdminService";
+import { getLockers } from "../../services/AdminService";
 
 const LockersScreen = () => {
-  const lockers = [
-    { id: 1, available: true },
-    { id: 2, available: false },
-    { id: 3, available: true },
-    { id: 4, available: false },
-    { id: 5, available: true },
-    { id: 6, available: false },
-    { id: 7, available: true },
-    { id: 8, available: false },
-    { id: 9, available: true },
-    { id: 10, available: false },
-    { id: 11, available: true },
-    { id: 12, available: false },
-    { id: 13, available: true },
-    { id: 14, available: false },
-    { id: 15, available: true },
-    { id: 16, available: false },
-    { id: 17, available: true },
-    { id: 18, available: false },
-    { id: 19, available: true },
-    { id: 20, available: false },
-    { id: 21, available: true },
-    { id: 22, available: false },
-    { id: 23, available: true },
-    { id: 24, available: false },
-  ];
+  const { infoUser } = useContext(AuthContext);
+  const [store, setStore] = useState(null);
+  const [lockers, setLockers] = useState(null);
+
+  const getLockersStore = async () => {
+    const lock = await getLockers(store);
+    setLockers(lock);
+  };
+
+  useEffect(() => {
+    const getIdStore = async () => {
+      const idStore = await getStore(infoUser.idUsuarios);
+      setStore(idStore.idTienda);
+    };
+    getIdStore();
+    getLockersStore();
+
+  }, []);
+
+  console.log("storeee", store);
+  console.log("lockers", lockers);
 
   return (
     <View style={styles.container}>
@@ -72,7 +67,7 @@ const LockersScreen = () => {
             justifyContent: "space-evenly",
           }}
         >
-          {lockers.map((locker) => (
+          {/* {lockers.map((locker) => (
             <View style={styles.locker} key={locker.id}>
               <Text style={styles.text}>{locker.id}</Text>
               <TouchableOpacity
@@ -93,8 +88,8 @@ const LockersScreen = () => {
                   style={styles.lockerImage}
                 />
               </TouchableOpacity>
-            </View>
-          ))}
+                </View>
+          ))}*/}
         </View>
       </ScrollView>
     </View>

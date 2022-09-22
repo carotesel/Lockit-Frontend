@@ -11,6 +11,7 @@ import CliLockersScreen from "../screens/Client/CliLockersScreen";
 
 // stacks 
 import ReservaStackScreen from "../stacks/Client/ReservaStackScreen";
+import LockersStackScreen from "../stacks/LockersStackScreen";
 
 
 const CliNavigation = () => {
@@ -44,7 +45,7 @@ const CliNavigation = () => {
 
       <Tab.Screen
         name="Lockers"
-        component={CliLockersScreen}
+        component={LockersStackScreen}
         options={{
           tabBarIcon: ({ color }) => (
             <Icon2

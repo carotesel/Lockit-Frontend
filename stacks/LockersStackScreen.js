@@ -1,8 +1,7 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import LockersScreen from '../screens/LockersScreen';
-import ActivosLockersScreen from '../screens/ActivosLockersScreen';
-
+import CliLockersScreen from '../screens/Client/CliLockersScreen'; 
+import CliLockersReservaScreen from '../screens/Client/CliLockersReservaScreen';
 
 
 const LockersStackScreen = () => {
@@ -12,13 +11,13 @@ const LockersStackScreen = () => {
         
         <LockersStack.Navigator> 
             
-            <LockersStack.Screen name="Lockers" component={LockersScreen} 
+            <LockersStack.Screen name="Lockers" component={CliLockersScreen} 
             options={{
               headerShown: false,
             }}
             />
             
-            <LockersStack.Screen name="Activos" component={ActivosLockersScreen} />  
+            <LockersStack.Screen name="LReservas" component={CliLockersReservaScreen} />  
         
         </LockersStack.Navigator> 
   );
