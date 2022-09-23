@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView } from "react-native";
 import React from "react";
 import { useRoute } from "@react-navigation/native";
 import Icon from "react-native-vector-icons/Ionicons";
@@ -79,9 +79,10 @@ const CliDetalleScreen = () => {
         </Text>
       </View>
 
-      <Text style={[styles.text, { marginTop: 30, marginLeft: 20 }]}>
+      <ScrollView style={{maxHeight: 250}}>
+      <Text style={[styles.text, { marginTop: 20, marginLeft: 20 }]}>
         {tienda.descripcion}
-      </Text>
+      </Text></ScrollView>
 
       <TouchableOpacity style={styles.orangebutton} onPress={()=> navigation.navigate("Reserva", {tienda: tienda})}>
         <View style={styles.centerText}>
@@ -152,8 +153,8 @@ const styles = StyleSheet.create({
     padding: 15,
     width: "65%",
     borderRadius: 8,
-    marginTop: 200,
     marginBottom: 8,
     alignSelf: "center",
+    marginTop: 30,
   },
 });

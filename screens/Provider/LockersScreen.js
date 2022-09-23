@@ -11,6 +11,7 @@ import {
   TextInput,
 } from "react-native";
 
+import { useFocusEffect } from "@react-navigation/native";
 import { AuthContext } from "../../context/AuthContext";
 import { getStore } from "../../services/AdminService";
 import { getLockers } from "../../services/AdminService";
@@ -18,22 +19,25 @@ import { getLockers } from "../../services/AdminService";
 const LockersScreen = () => {
   const { infoUser } = useContext(AuthContext);
   const [store, setStore] = useState(null);
-  const [lockers, setLockers] = useState(null);
+  const [lockers, setLockers] = useState([]);
+
+  const getIdStore = async () => {
+    const idStore = await getStore(infoUser.idUsuarios);
+    setStore(idStore.idTienda);
+  };
 
   const getLockersStore = async () => {
     const lock = await getLockers(store);
+    console.log("lockkkkkk", lock);
     setLockers(lock);
   };
 
   useEffect(() => {
-    const getIdStore = async () => {
-      const idStore = await getStore(infoUser.idUsuarios);
-      setStore(idStore.idTienda);
-    };
     getIdStore();
-    getLockersStore();
-
-  }, []);
+    if (store) {
+      getLockersStore();
+    }
+  }, [store]);
 
   console.log("storeee", store);
   console.log("lockers", lockers);
@@ -67,29 +71,30 @@ const LockersScreen = () => {
             justifyContent: "space-evenly",
           }}
         >
-          {/* {lockers.map((locker) => (
-            <View style={styles.locker} key={locker.id}>
+          {lockers.map((locker) => (
+            <View style={styles.locker} key={locker.idLocker}>
               <Text style={styles.text}>{locker.id}</Text>
               <TouchableOpacity
                 onPress={() =>
                   alert(
-                    locker.available
-                      ? "locker disponibleee"
-                      : "locker ocupadooo"
+                    locker.activo
+                      ? "locker ocupadooo" 
+                      : "locker disponibleee"
                   )
                 }
               >
+                <Text style={styles.text}> {locker.idLocker}</Text>
                 <Image
                   source={
-                    locker.available
-                      ? require("../../assets/icons/2.png")
-                      : require("../../assets/icons/1.png")
+                    locker.activo
+                      ? require("../../assets/icons/1.png")
+                      :  require("../../assets/icons/2.png") 
                   }
                   style={styles.lockerImage}
                 />
               </TouchableOpacity>
                 </View>
-          ))}*/}
+          ))}
         </View>
       </ScrollView>
     </View>
@@ -123,6 +128,7 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 18,
     marginTop: "5%",
+    alignSelf: "center",
   },
   textInput: {
     width: 350,
